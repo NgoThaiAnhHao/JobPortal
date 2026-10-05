@@ -1,4 +1,4 @@
-package jobportal.presentation;
+package jobportal.presentation.controller;
 
 import jobportal.application.dto.usertypes.UserTypeResponse;
 import jobportal.application.usecase.usertypes.GetAllUserTypes;

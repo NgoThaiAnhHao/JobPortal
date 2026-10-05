@@ -2,16 +2,14 @@ package jobportal.domain.entity;
 
 import jakarta.persistence.*;
 import jobportal.domain.enums.UserTypeEnum;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "user_types")
 public class UserType {
 

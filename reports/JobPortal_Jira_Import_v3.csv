@@ -1,0 +1,2044 @@
+﻿Work Type,Summary,Description,Priority,Story Points,Original Estimate,Labels,Labels,Labels,Labels,Labels,Work item ID,Parent,Story Map Order
+Epic,[01] Authenticate and Activate Account,"Authentication, email OTP activation, Google authentication, refresh-token session management, and logout.",Highest,,,journey-01-authentication,backend,jobportal,,,1001,,01.00
+Story,[01.01][UC-01] Register a Disabled Local Account,"Description
+Allow a Guest to register as RECRUITER or JOB_SEEKER. Create the disabled local account, corresponding profile, and current OTP record in a transaction, then send the OTP by email.
+
+HTTP Method / API Path
+- POST /v2/api/auth/register
+
+Related UC
+UC-01
+
+Related FR
+FR-AUTH-01, FR-AUTH-02, FR-AUTH-03
+
+Related BR
+BR-AUTH-01, BR-AUTH-02, BR-AUTH-06, BR-AUTH-07, BR-AUTH-08, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-01, VAL-AUTH-02, VAL-AUTH-03, VAL-PROF-01, VAL-PROF-02
+
+Acceptance Criteria
+1. Valid registration creates enabled=false and email_verified_at=null.
+2. The password, OTP, and refresh secrets are never stored in plain text.
+3. No access or refresh token is returned before OTP verification.
+4. Email-delivery failure leaves the account disabled and resend remains available.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Platform database migration
+- Email delivery configuration
+- Shared API error handling",High,5,,auth,otp,registration,backend,journey-01-authentication,2001,1001,01.01
+Sub-task,[01.01.01] Implement account activation and OTP persistence model,"Implementation Layer
+Database / Domain / Repository
+
+Parent Story
+[01.01][UC-01] Register a Disabled Local Account
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,registration,backend,journey-01-authentication,4001,2001,01.01.01
+Sub-task,[01.01.02] Implement disabled registration transaction and OTP issuance rules,"Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[01.01][UC-01] Register a Disabled Local Account
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,registration,backend,journey-01-authentication,4002,2001,01.01.02
+Sub-task,[01.01.03] Expose registration API and integrate email delivery,"Implementation Layer
+Integration / API / Exception Handling
+
+Parent Story
+[01.01][UC-01] Register a Disabled Local Account
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,registration,backend,journey-01-authentication,4003,2001,01.01.03
+Sub-task,[01.01.04] Add registration tests and OpenAPI documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[01.01][UC-01] Register a Disabled Local Account
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,otp,registration,backend,journey-01-authentication,4004,2001,01.01.04
+Story,[01.02][UC-02] Verify Registration OTP,"Description
+Verify the latest active OTP of an unverified local account, enable the account, set email_verified_at, and delete the OTP record in one transaction.
+
+HTTP Method / API Path
+- POST /v2/api/auth/verify-otp
+
+Related UC
+UC-02
+
+Related FR
+FR-AUTH-04, FR-AUTH-05
+
+Related BR
+BR-AUTH-07, BR-AUTH-09, BR-AUTH-10, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-01, VAL-AUTH-06, VAL-AUTH-07
+
+Acceptance Criteria
+1. A valid OTP enables the account exactly once.
+2. An invalid OTP does not enable the account.
+3. An expired OTP is deleted and returns OTP_EXPIRED.
+4. A successful verification deletes the OTP record.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Register a Disabled Local Account
+- Shared API error handling",High,5,,auth,otp,verification,backend,journey-01-authentication,2002,1001,01.02
+Sub-task,[01.02.01] Implement OTP hash verification and account activation transaction,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[01.02][UC-02] Verify Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,verification,backend,journey-01-authentication,4005,2002,01.02.01
+Sub-task,[01.02.02] Expose verify-otp API and map activation errors,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[01.02][UC-02] Verify Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,otp,verification,backend,journey-01-authentication,4006,2002,01.02.02
+Sub-task,"[01.02.03] Add OTP verification unit, controller, and integration tests","Implementation Layer
+Testing
+
+Parent Story
+[01.02][UC-02] Verify Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,verification,backend,journey-01-authentication,4007,2002,01.02.03
+Sub-task,"[01.02.04] Document verify-otp request, response, and error codes","Implementation Layer
+Documentation
+
+Parent Story
+[01.02][UC-02] Verify Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,otp,verification,backend,journey-01-authentication,4008,2002,01.02.04
+Story,[01.03][UC-03] Resend Registration OTP,"Description
+Replace the previous OTP of an unverified local account after the resend cooldown and send the new OTP by email.
+
+HTTP Method / API Path
+- POST /v2/api/auth/resend-otp
+
+Related UC
+UC-03
+
+Related FR
+FR-AUTH-06
+
+Related BR
+BR-AUTH-08, BR-AUTH-09, BR-AUTH-11, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-01, VAL-AUTH-08
+
+Acceptance Criteria
+1. Only an unverified LOCAL account can request resend.
+2. The previous OTP is removed before the replacement is persisted.
+3. The configured cooldown is enforced.
+4. Only one current OTP record remains for the User.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Register a Disabled Local Account
+- Email delivery configuration",High,3,,auth,otp,resend,backend,journey-01-authentication,2003,1001,01.03
+Sub-task,"[01.03.01] Implement resend eligibility, cooldown, and replacement rules","Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[01.03][UC-03] Resend Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,otp,resend,backend,journey-01-authentication,4009,2003,01.03.01
+Sub-task,[01.03.02] Expose resend-otp API and email integration,"Implementation Layer
+Integration / API
+
+Parent Story
+[01.03][UC-03] Resend Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,otp,resend,backend,journey-01-authentication,4010,2003,01.03.02
+Sub-task,[01.03.03] Add resend tests and OpenAPI documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[01.03][UC-03] Resend Registration OTP
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,otp,resend,backend,journey-01-authentication,4011,2003,01.03.03
+Story,[01.04][UC-04] Login with Email and Password,"Description
+Authenticate an enabled, verified, non-deleted local account and create an access-token and refresh-token session.
+
+HTTP Method / API Path
+- POST /v2/api/auth/login
+
+Related UC
+UC-04
+
+Related FR
+FR-AUTH-07, FR-AUTH-13
+
+Related BR
+BR-AUTH-03, BR-AUTH-05, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-01, VAL-AUTH-02
+
+Acceptance Criteria
+1. Unverified, disabled, or deleted accounts cannot log in.
+2. Valid credentials return access and refresh tokens.
+3. Invalid credentials do not disclose which credential was wrong.
+4. Only the refresh-token hash is persisted.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Verify Registration OTP
+- JWT and refresh-token security configuration",High,3,,auth,login,jwt,backend,journey-01-authentication,2004,1001,01.04
+Sub-task,[01.04.01] Implement credential and account-status authentication,"Implementation Layer
+Security / Business Logic
+
+Parent Story
+[01.04][UC-04] Login with Email and Password
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,login,jwt,backend,journey-01-authentication,4012,2004,01.04.01
+Sub-task,[01.04.02] Create refresh-token session and expose login API,"Implementation Layer
+Persistence / API
+
+Parent Story
+[01.04][UC-04] Login with Email and Password
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,login,jwt,backend,journey-01-authentication,4013,2004,01.04.02
+Sub-task,[01.04.03] Add login tests and OpenAPI documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[01.04][UC-04] Login with Email and Password
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,login,jwt,backend,journey-01-authentication,4014,2004,01.04.03
+Story,[01.05][UC-05] Authenticate with Google OAuth2,"Description
+Verify a Google ID token, then log in, create, or safely link an account only when Google confirms a verified email.
+
+HTTP Method / API Path
+- POST /v2/api/auth/google
+
+Related UC
+UC-05
+
+Related FR
+FR-AUTH-08, FR-AUTH-13
+
+Related BR
+BR-AUTH-03, BR-AUTH-04, BR-AUTH-05, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-03, VAL-AUTH-04
+
+Acceptance Criteria
+1. Invalid Google tokens and unverified Google emails are rejected.
+2. A newly created Google account is enabled immediately.
+3. Existing password/provider values are not overwritten outside the linking rule.
+4. A successful request creates an access and refresh-token session.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- JWT and refresh-token security configuration",High,5,,auth,google-oauth2,jwt,backend,journey-01-authentication,2005,1001,01.05
+Sub-task,[01.05.01] Integrate Google ID-token verification,"Implementation Layer
+Integration / Security
+
+Parent Story
+[01.05][UC-05] Authenticate with Google OAuth2
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,google-oauth2,jwt,backend,journey-01-authentication,4015,2005,01.05.01
+Sub-task,[01.05.02] Implement Google account create and link rules,"Implementation Layer
+Business Logic / Persistence
+
+Parent Story
+[01.05][UC-05] Authenticate with Google OAuth2
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,google-oauth2,jwt,backend,journey-01-authentication,4016,2005,01.05.02
+Sub-task,[01.05.03] Expose Google authentication API and conflict mapping,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[01.05][UC-05] Authenticate with Google OAuth2
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,google-oauth2,jwt,backend,journey-01-authentication,4017,2005,01.05.03
+Sub-task,[01.05.04] Add Google authentication integration tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[01.05][UC-05] Authenticate with Google OAuth2
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,google-oauth2,jwt,backend,journey-01-authentication,4018,2005,01.05.04
+Story,[01.06][UC-06] Refresh an Access Token,"Description
+Issue a new access token from an active refresh-token record and delete expired or invalidated session records when detected.
+
+HTTP Method / API Path
+- POST /v2/api/auth/refresh-token
+
+Related UC
+UC-06
+
+Related FR
+FR-AUTH-09, FR-AUTH-11, FR-AUTH-13
+
+Related BR
+BR-AUTH-03, BR-AUTH-05, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-05
+
+Acceptance Criteria
+1. A valid active refresh token returns a new access token.
+2. An expired token is deleted and rejected.
+3. A disabled, unverified, or deleted User cannot refresh.
+4. All User refresh tokens are deleted when account status invalidates the sessions.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Login with Email and Password or Google OAuth2
+- JWT and refresh-token security configuration",High,3,,auth,refresh-token,jwt,backend,journey-01-authentication,2006,1001,01.06
+Sub-task,"[01.06.01] Implement refresh-token lookup, expiry, and account-status checks","Implementation Layer
+Security / Persistence
+
+Parent Story
+[01.06][UC-06] Refresh an Access Token
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,auth,refresh-token,jwt,backend,journey-01-authentication,4019,2006,01.06.01
+Sub-task,[01.06.02] Expose refresh-token API and cleanup behavior,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[01.06][UC-06] Refresh an Access Token
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,refresh-token,jwt,backend,journey-01-authentication,4020,2006,01.06.02
+Sub-task,[01.06.03] Add refresh-token tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[01.06][UC-06] Refresh an Access Token
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,refresh-token,jwt,backend,journey-01-authentication,4021,2006,01.06.03
+Story,[01.07][UC-07] Logout with a Refresh Token,"Description
+End the submitted session by deleting the matching refresh-token record. Logout is idempotent.
+
+HTTP Method / API Path
+- POST /v2/api/auth/logout
+
+Related UC
+UC-07
+
+Related FR
+FR-AUTH-10, FR-AUTH-11
+
+Related BR
+BR-AUTH-05, BR-AUTH-12
+
+Related VAL
+VAL-AUTH-05
+
+Acceptance Criteria
+1. The matching refresh-token row is deleted.
+2. The same token cannot be used to refresh after logout.
+3. Already missing or expired tokens return idempotent success.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Login or Google authentication",High,2,,auth,logout,refresh-token,backend,journey-01-authentication,2007,1001,01.07
+Sub-task,[01.07.01] Implement idempotent session-token deletion,"Implementation Layer
+Business Logic / Persistence
+
+Parent Story
+[01.07][UC-07] Logout with a Refresh Token
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,logout,refresh-token,backend,journey-01-authentication,4022,2007,01.07.01
+Sub-task,"[01.07.02] Expose logout API, tests, and documentation","Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[01.07][UC-07] Logout with a Refresh Token
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,auth,logout,refresh-token,backend,journey-01-authentication,4023,2007,01.07.02
+Epic,[02] Discover Public Jobs,"Public job search, filters, sorting, pagination, and job details.",Highest,,,journey-02-job-discovery,backend,jobportal,,,1002,,02.00
+Story,"[02.01][UC-08] Search, Filter, Sort, and Paginate Jobs","Description
+Return only public available jobs using keyword search, supported filters, sorting, and pagination metadata.
+
+HTTP Method / API Path
+- GET /v2/api/jobs
+
+Related UC
+UC-08
+
+Related FR
+FR-JOB-01, FR-JOB-02, FR-JOB-03, FR-JOB-04, FR-JOB-05
+
+Related BR
+BR-JOB-04, BR-JOB-06
+
+Related VAL
+VAL-SEARCH-01, VAL-SEARCH-02, VAL-SEARCH-03, VAL-SEARCH-04, VAL-GEN-03
+
+Acceptance Criteria
+1. Only PUBLISHED, unexpired, non-deleted jobs of active companies are returned.
+2. Supported filters and sorting are validated.
+3. No result returns an empty page, not an error.
+4. Pagination returns totalElements and totalPages.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Job and company persistence
+- Shared pagination and soft-delete filtering",High,5,,jobs,search,public-api,backend,journey-02-job-discovery,2008,1002,02.01
+Sub-task,[02.01.01] Implement public job search specification and pagination,"Implementation Layer
+Repository / Query
+
+Parent Story
+[02.01][UC-08] Search, Filter, Sort, and Paginate Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,jobs,search,public-api,backend,journey-02-job-discovery,4024,2008,02.01.01
+Sub-task,"[02.01.02] Implement public-availability, filter, and sorting rules","Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[02.01][UC-08] Search, Filter, Sort, and Paginate Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,search,public-api,backend,journey-02-job-discovery,4025,2008,02.01.02
+Sub-task,[02.01.03] Expose public job list API,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[02.01][UC-08] Search, Filter, Sort, and Paginate Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,jobs,search,public-api,backend,journey-02-job-discovery,4026,2008,02.01.03
+Sub-task,[02.01.04] Add search tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[02.01][UC-08] Search, Filter, Sort, and Paginate Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,search,public-api,backend,journey-02-job-discovery,4027,2008,02.01.04
+Story,[02.02][UC-08] View Public Job Details,"Description
+Return public job details including company, description, required skills, salary, location, and deadline.
+
+HTTP Method / API Path
+- GET /v2/api/jobs/{jobId}
+
+Related UC
+UC-08
+
+Related FR
+FR-JOB-06
+
+Related BR
+BR-JOB-04, BR-JOB-06
+
+Related VAL
+VAL-GEN-01
+
+Acceptance Criteria
+1. Available jobs return complete public details.
+2. Closed, expired, archived, or deleted jobs return JOB_NOT_AVAILABLE or NOT_FOUND according to the documented convention.
+3. Private applicant information is not exposed.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Search, Filter, Sort, and Paginate Jobs",High,3,,jobs,job-detail,public-api,backend,journey-02-job-discovery,2009,1002,02.02
+Sub-task,[02.02.01] Implement public job-detail projection and availability rules,"Implementation Layer
+Repository / Business Logic
+
+Parent Story
+[02.02][UC-08] View Public Job Details
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,job-detail,public-api,backend,journey-02-job-discovery,4028,2009,02.02.01
+Sub-task,[02.02.02] Expose job-detail API with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[02.02][UC-08] View Public Job Details
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,job-detail,public-api,backend,journey-02-job-discovery,4029,2009,02.02.02
+Epic,[03] Manage Job Seeker Profile,"Job Seeker profile, skills, and saved jobs.",Highest,,,journey-03-job-seeker-profile,backend,jobportal,,,1003,,03.00
+Story,[03.01][UC-09] Manage Job Seeker Profile,"Description
+Allow a Job Seeker to view and update personal information, resume URL, and profile image.
+
+HTTP Method / API Path
+- GET /v2/api/job-seekers/me
+- PUT /v2/api/job-seekers/me
+
+Related UC
+UC-09
+
+Related FR
+FR-JS-01, FR-JS-02
+
+Related BR
+BR-AUDIT-01
+
+Related VAL
+VAL-PROF-01, VAL-PROF-02, VAL-PROF-03, VAL-PROF-04, VAL-PROF-05, VAL-PROF-06
+
+Acceptance Criteria
+1. Only the authenticated Job Seeker can update the profile.
+2. Profile validation rules are enforced.
+3. Changes create an Audit Log.
+4. The updated profile is returned or can be retrieved.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Authentication and authorization
+- Audit logging infrastructure",High,5,,job-seeker,profile,backend,journey-03-job-seeker-profile,,2010,1003,03.01
+Sub-task,[03.01.01] Implement profile persistence and authenticated-user lookup,"Implementation Layer
+Domain / Persistence
+
+Parent Story
+[03.01][UC-09] Manage Job Seeker Profile
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,profile,backend,journey-03-job-seeker-profile,,4030,2010,03.01.01
+Sub-task,[03.01.02] Implement profile update rules and audit integration,"Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[03.01][UC-09] Manage Job Seeker Profile
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,profile,backend,journey-03-job-seeker-profile,,4031,2010,03.01.02
+Sub-task,[03.01.03] Expose profile GET and PUT APIs,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[03.01][UC-09] Manage Job Seeker Profile
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,job-seeker,profile,backend,journey-03-job-seeker-profile,,4032,2010,03.01.03
+Sub-task,[03.01.04] Add profile tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[03.01][UC-09] Manage Job Seeker Profile
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,job-seeker,profile,backend,journey-03-job-seeker-profile,,4033,2010,03.01.04
+Story,[03.02][UC-09] Manage Job Seeker Skills,"Description
+Allow a Job Seeker to list, add, update, and remove skills with experience level and years of experience.
+
+HTTP Method / API Path
+- GET /v2/api/job-seekers/me/skills
+- POST /v2/api/job-seekers/me/skills
+- PUT /v2/api/job-seekers/me/skills/{skillId}
+- DELETE /v2/api/job-seekers/me/skills/{skillId}
+
+Related UC
+UC-09
+
+Related FR
+FR-JS-03
+
+Related BR
+BR-SEEK-01, BR-AUDIT-01
+
+Related VAL
+VAL-SKILL-01, VAL-SKILL-02, VAL-SKILL-03, VAL-SKILL-04
+
+Acceptance Criteria
+1. Only active catalog skills can be selected.
+2. The same skill is not duplicated in a profile.
+3. Duplicate add updates or returns conflict according to the documented convention.
+4. Changes are audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Manage Job Seeker Profile
+- Admin skill taxonomy",High,5,,job-seeker,skills,backend,journey-03-job-seeker-profile,,2011,1003,03.02
+Sub-task,[03.02.01] Implement Job Seeker skill mapping persistence,"Implementation Layer
+Domain / Persistence
+
+Parent Story
+[03.02][UC-09] Manage Job Seeker Skills
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,skills,backend,journey-03-job-seeker-profile,,4034,2011,03.02.01
+Sub-task,[03.02.02] Implement skill uniqueness and experience rules,"Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[03.02][UC-09] Manage Job Seeker Skills
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,skills,backend,journey-03-job-seeker-profile,,4035,2011,03.02.02
+Sub-task,[03.02.03] Expose skill management APIs,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[03.02][UC-09] Manage Job Seeker Skills
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,skills,backend,journey-03-job-seeker-profile,,4036,2011,03.02.03
+Sub-task,[03.02.04] Add skill tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[03.02][UC-09] Manage Job Seeker Skills
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,job-seeker,skills,backend,journey-03-job-seeker-profile,,4037,2011,03.02.04
+Story,[03.03][UC-10] Save or Unsave a Job,"Description
+Allow a Job Seeker to save or unsave an available job while keeping the operation idempotent.
+
+HTTP Method / API Path
+- POST /v2/api/job-seekers/me/saved-jobs/{jobId}
+- DELETE /v2/api/job-seekers/me/saved-jobs/{jobId}
+
+Related UC
+UC-10
+
+Related FR
+FR-JS-04
+
+Related BR
+BR-SAVE-01, BR-JOB-04, BR-JOB-06
+
+Related VAL
+VAL-GEN-01
+
+Acceptance Criteria
+1. At most one active saved record exists for each User and Job.
+2. Unavailable jobs cannot be newly saved.
+3. Repeated save or unsave follows the documented idempotent convention.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Public job availability
+- Authentication",High,3,,job-seeker,saved-jobs,backend,journey-03-job-seeker-profile,,2012,1003,03.03
+Sub-task,[03.03.01] Implement saved-job uniqueness and idempotent operations,"Implementation Layer
+Persistence / Business Logic
+
+Parent Story
+[03.03][UC-10] Save or Unsave a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,saved-jobs,backend,journey-03-job-seeker-profile,,4038,2012,03.03.01
+Sub-task,[03.03.02] Expose save/unsave APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[03.03][UC-10] Save or Unsave a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,saved-jobs,backend,journey-03-job-seeker-profile,,4039,2012,03.03.02
+Story,[03.04][UC-10] View Saved Jobs,"Description
+Return the authenticated Job Seeker's saved jobs using pagination and excluding unavailable deleted data according to the SRS.
+
+HTTP Method / API Path
+- GET /v2/api/job-seekers/me/saved-jobs
+
+Related UC
+UC-10
+
+Related FR
+FR-JS-05
+
+Related BR
+BR-SAVE-01, BR-JOB-06
+
+Related VAL
+VAL-GEN-03
+
+Acceptance Criteria
+1. Only the current User's saved jobs are returned.
+2. Pagination metadata is included.
+3. Soft-deleted jobs do not appear as active public jobs.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Save or Unsave a Job
+- Shared pagination",High,3,,job-seeker,saved-jobs,pagination,backend,journey-03-job-seeker-profile,2013,1003,03.04
+Sub-task,[03.04.01] Implement saved-job paginated projection,"Implementation Layer
+Repository / Business Logic
+
+Parent Story
+[03.04][UC-10] View Saved Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,job-seeker,saved-jobs,pagination,backend,journey-03-job-seeker-profile,4040,2013,03.04.01
+Sub-task,[03.04.02] Expose saved-job list API with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[03.04][UC-10] View Saved Jobs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,job-seeker,saved-jobs,pagination,backend,journey-03-job-seeker-profile,4041,2013,03.04.02
+Epic,[04] Apply and Track Applications,"Job application submission, tracking, and withdrawal.",Highest,,,journey-04-applications,backend,jobportal,,,1004,,04.00
+Story,[04.01][UC-11] Apply for a Job,"Description
+Create one SUBMITTED application for an available job using a valid resume and optional cover letter.
+
+HTTP Method / API Path
+- POST /v2/api/jobs/{jobId}/applications
+
+Related UC
+UC-11
+
+Related FR
+FR-JS-06
+
+Related BR
+BR-APP-01, BR-APP-02, BR-APP-03, BR-JOB-04
+
+Related VAL
+VAL-APP-01, VAL-APP-02, VAL-APP-03, VAL-GEN-01
+
+Acceptance Criteria
+1. Only a Job Seeker can apply for themselves.
+2. The Job must be public and available.
+3. A duplicate application is rejected.
+4. Application creation is transactional and returns applicationId and status.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Manage Job Seeker Profile
+- Public job availability",High,5,,applications,job-seeker,backend,journey-04-applications,,2014,1004,04.01
+Sub-task,[04.01.01] Implement application uniqueness and transactional persistence,"Implementation Layer
+Database / Persistence
+
+Parent Story
+[04.01][UC-11] Apply for a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,job-seeker,backend,journey-04-applications,,4042,2014,04.01.01
+Sub-task,"[04.01.02] Implement eligibility, resume fallback, and duplicate rules","Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[04.01][UC-11] Apply for a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,job-seeker,backend,journey-04-applications,,4043,2014,04.01.02
+Sub-task,[04.01.03] Expose job application API,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[04.01][UC-11] Apply for a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,applications,job-seeker,backend,journey-04-applications,,4044,2014,04.01.03
+Sub-task,[04.01.04] Add application tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[04.01][UC-11] Apply for a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,job-seeker,backend,journey-04-applications,,4045,2014,04.01.04
+Story,[04.02][UC-12] View Job Applications,"Description
+Allow a Job Seeker to view a paginated application history and the details of an owned application.
+
+HTTP Method / API Path
+- GET /v2/api/job-seekers/me/applications
+- GET /v2/api/job-seekers/me/applications/{applicationId}
+
+Related UC
+UC-12
+
+Related FR
+FR-JS-07
+
+Related BR
+BR-APP-06
+
+Related VAL
+VAL-GEN-01, VAL-GEN-03
+
+Acceptance Criteria
+1. Only owned applications are visible.
+2. List and detail include current status and submitted data.
+3. Unknown or hidden applications return NOT_FOUND.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Apply for a Job
+- Shared pagination",High,3,,applications,job-seeker,privacy,backend,journey-04-applications,2015,1004,04.02
+Sub-task,[04.02.01] Implement owned application queries and privacy projection,"Implementation Layer
+Repository / Security
+
+Parent Story
+[04.02][UC-12] View Job Applications
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,job-seeker,privacy,backend,journey-04-applications,4046,2015,04.02.01
+Sub-task,[04.02.02] Expose application list/detail APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[04.02][UC-12] View Job Applications
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,job-seeker,privacy,backend,journey-04-applications,4047,2015,04.02.02
+Story,[04.03][UC-12] Withdraw a Job Application,"Description
+Allow a Job Seeker to withdraw an owned application only from a permitted non-terminal status.
+
+HTTP Method / API Path
+- PATCH /v2/api/job-seekers/me/applications/{applicationId}/withdraw
+
+Related UC
+UC-12
+
+Related FR
+FR-JS-08
+
+Related BR
+BR-APP-04, BR-APP-06, BR-AUDIT-01
+
+Related VAL
+VAL-GEN-01
+
+Acceptance Criteria
+1. Only the application owner can withdraw.
+2. Only SUBMITTED, REVIEWING, or SHORTLISTED can become WITHDRAWN.
+3. Terminal or already withdrawn applications are rejected.
+4. The status change is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- View Job Applications
+- Audit logging infrastructure",High,3,,applications,withdrawal,job-seeker,backend,journey-04-applications,2016,1004,04.03
+Sub-task,[04.03.01] Implement ownership and withdrawal transition rules,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[04.03][UC-12] Withdraw a Job Application
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,withdrawal,job-seeker,backend,journey-04-applications,4048,2016,04.03.01
+Sub-task,[04.03.02] Expose withdrawal API with audit tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[04.03][UC-12] Withdraw a Job Application
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,applications,withdrawal,job-seeker,backend,journey-04-applications,4049,2016,04.03.02
+Epic,[05] Manage Company and Job Postings,"Company, members, verification requests, and job-posting lifecycle.",Highest,,,journey-05-company-jobs,backend,jobportal,,,1005,,05.00
+Story,[05.01][UC-13] Create a Company and Owner Membership,"Description
+Create a company and assign the creator as its active OWNER in one transaction.
+
+HTTP Method / API Path
+- POST /v2/api/companies
+
+Related UC
+UC-13
+
+Related FR
+FR-REC-01
+
+Related BR
+BR-COMP-03, BR-COMP-04, BR-AUDIT-01
+
+Related VAL
+VAL-COMP-01, VAL-COMP-02, VAL-COMP-03, VAL-COMP-04, VAL-COMP-05, VAL-COMP-06
+
+Acceptance Criteria
+1. Only a Recruiter can create a company.
+2. Company and OWNER membership are created atomically.
+3. The creator is an active OWNER.
+4. The operation is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Authentication
+- Database transaction support",High,5,,company,recruiter,backend,journey-05-company-jobs,,2017,1005,05.01
+Sub-task,[05.01.01] Implement company and membership persistence model,"Implementation Layer
+Database / Domain
+
+Parent Story
+[05.01][UC-13] Create a Company and Owner Membership
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,recruiter,backend,journey-05-company-jobs,,4050,2017,05.01.01
+Sub-task,[05.01.02] Implement company creation and owner transaction rules,"Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[05.01][UC-13] Create a Company and Owner Membership
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,recruiter,backend,journey-05-company-jobs,,4051,2017,05.01.02
+Sub-task,[05.01.03] Expose company creation API with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[05.01][UC-13] Create a Company and Owner Membership
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,recruiter,backend,journey-05-company-jobs,,4052,2017,05.01.03
+Story,[05.02][UC-13] Update Company and Request Verification,"Description
+Allow a Company Owner to view and update company information and submit a verification request.
+
+HTTP Method / API Path
+- GET /v2/api/companies/{companyId}
+- PUT /v2/api/companies/{companyId}
+- POST /v2/api/companies/{companyId}/verification-requests
+
+Related UC
+UC-13
+
+Related FR
+FR-REC-02
+
+Related BR
+BR-COMP-02, BR-AUDIT-01
+
+Related VAL
+VAL-COMP-01, VAL-COMP-02, VAL-COMP-03, VAL-COMP-04, VAL-COMP-05, VAL-COMP-06
+
+Acceptance Criteria
+1. Only an Owner or Admin can update the company.
+2. Company validation rules are enforced.
+3. Verification request is accepted only for a non-deleted company.
+4. Updates are audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Create a Company and Owner Membership",High,5,,company,verification-request,recruiter,backend,journey-05-company-jobs,2018,1005,05.02
+Sub-task,[05.02.01] Implement owner authorization and company update rules,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[05.02][UC-13] Update Company and Request Verification
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,verification-request,recruiter,backend,journey-05-company-jobs,4053,2018,05.02.01
+Sub-task,"[05.02.02] Expose company detail, update, and verification-request APIs","Implementation Layer
+API / Exception Handling
+
+Parent Story
+[05.02][UC-13] Update Company and Request Verification
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,verification-request,recruiter,backend,journey-05-company-jobs,4054,2018,05.02.02
+Sub-task,[05.02.03] Add company update tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[05.02][UC-13] Update Company and Request Verification
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,company,verification-request,recruiter,backend,journey-05-company-jobs,4055,2018,05.02.03
+Story,[05.03][UC-13] Manage Company Members,"Description
+Allow an Owner to add an existing Recruiter, change a member role, or deactivate a member while preserving at least one active OWNER.
+
+HTTP Method / API Path
+- GET /v2/api/companies/{companyId}/members
+- POST /v2/api/companies/{companyId}/members
+- PATCH /v2/api/companies/{companyId}/members/{memberId}
+- PATCH /v2/api/companies/{companyId}/members/{memberId}/deactivate
+
+Related UC
+UC-13
+
+Related FR
+FR-REC-03, FR-REC-04
+
+Related BR
+BR-COMP-02, BR-COMP-03, BR-COMP-04, BR-AUDIT-01
+
+Related VAL
+VAL-COMP-07, VAL-COMP-08, VAL-AUTH-01
+
+Acceptance Criteria
+1. Only Owner/Admin can manage members.
+2. Member email belongs to a Recruiter.
+3. Membership is unique per User and Company.
+4. The last active OWNER cannot be removed or downgraded.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Create a Company and Owner Membership",High,5,,company,members,authorization,backend,journey-05-company-jobs,2019,1005,05.03
+Sub-task,[05.03.01] Implement membership uniqueness and owner-preservation rules,"Implementation Layer
+Persistence / Business Logic
+
+Parent Story
+[05.03][UC-13] Manage Company Members
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,company,members,authorization,backend,journey-05-company-jobs,4056,2019,05.03.01
+Sub-task,[05.03.02] Expose authorized member-management APIs,"Implementation Layer
+Security / API
+
+Parent Story
+[05.03][UC-13] Manage Company Members
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,members,authorization,backend,journey-05-company-jobs,4057,2019,05.03.02
+Sub-task,[05.03.03] Add membership tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[05.03][UC-13] Manage Company Members
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,company,members,authorization,backend,journey-05-company-jobs,4058,2019,05.03.03
+Story,[05.04][UC-14] Create and Update a Draft Job,"Description
+Allow an authorized company Recruiter to create a DRAFT job, add required skills, list company jobs, and update an owned job.
+
+HTTP Method / API Path
+- GET /v2/api/companies/{companyId}/jobs
+- POST /v2/api/companies/{companyId}/jobs
+- GET /v2/api/companies/{companyId}/jobs/{jobId}
+- PUT /v2/api/companies/{companyId}/jobs/{jobId}
+
+Related UC
+UC-14
+
+Related FR
+FR-REC-05, FR-REC-06
+
+Related BR
+BR-JOB-01, BR-JOB-02, BR-JOB-05, BR-AUDIT-01
+
+Related VAL
+VAL-JOB-01, VAL-JOB-02, VAL-JOB-03, VAL-JOB-04, VAL-JOB-05, VAL-JOB-06, VAL-JOB-07, VAL-JOB-09, VAL-JOB-10, VAL-JOB-11
+
+Acceptance Criteria
+1. A new job always starts DRAFT.
+2. The job belongs to exactly one company and valid poster.
+3. Salary and skill rules are enforced.
+4. Unauthorized company access returns FORBIDDEN.
+5. Changes are audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Company membership
+- Admin category and skill taxonomy",High,8,,jobs,recruiter,company,backend,journey-05-company-jobs,2020,1005,05.04
+Sub-task,"[05.04.01] Implement job, required-skill, and company-scoped persistence","Implementation Layer
+Database / Domain / Repository
+
+Parent Story
+[05.04][UC-14] Create and Update a Draft Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,2d,jobs,recruiter,company,backend,journey-05-company-jobs,4059,2020,05.04.01
+Sub-task,"[05.04.02] Implement draft creation, update, salary, category, and skill rules","Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[05.04][UC-14] Create and Update a Draft Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,2d,jobs,recruiter,company,backend,journey-05-company-jobs,4060,2020,05.04.02
+Sub-task,[05.04.03] Expose company job list/create/detail/update APIs,"Implementation Layer
+Security / API
+
+Parent Story
+[05.04][UC-14] Create and Update a Draft Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,jobs,recruiter,company,backend,journey-05-company-jobs,4061,2020,05.04.03
+Sub-task,[05.04.04] Add draft job tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[05.04][UC-14] Create and Update a Draft Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,recruiter,company,backend,journey-05-company-jobs,4062,2020,05.04.04
+Story,[05.05][UC-14] Publish a Job,"Description
+Publish an owned DRAFT job only when the company is verified and all publication data is valid.
+
+HTTP Method / API Path
+- POST /v2/api/companies/{companyId}/jobs/{jobId}/publish
+
+Related UC
+UC-14
+
+Related FR
+FR-REC-07
+
+Related BR
+BR-COMP-01, BR-JOB-02, BR-JOB-03, BR-JOB-04, BR-AUDIT-01
+
+Related VAL
+VAL-JOB-01 to VAL-JOB-12
+
+Acceptance Criteria
+1. Only active company members can publish.
+2. The company is verified.
+3. Required job data and future deadline are valid.
+4. Status becomes PUBLISHED and published_at is set.
+5. The change is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Create and Update a Draft Job
+- Admin company verification",High,5,,jobs,publish,recruiter,backend,journey-05-company-jobs,2021,1005,05.05
+Sub-task,[05.05.01] Implement publication eligibility and transition rules,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[05.05][UC-14] Publish a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,jobs,publish,recruiter,backend,journey-05-company-jobs,4063,2021,05.05.01
+Sub-task,[05.05.02] Expose publish action API,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[05.05][UC-14] Publish a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,jobs,publish,recruiter,backend,journey-05-company-jobs,4064,2021,05.05.02
+Sub-task,[05.05.03] Add publication tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[05.05][UC-14] Publish a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,publish,recruiter,backend,journey-05-company-jobs,4065,2021,05.05.03
+Story,"[05.06][UC-14] Close, Archive, or Soft-delete a Job","Description
+Apply valid close, archive, or soft-delete actions to an owned company job while retaining application history.
+
+HTTP Method / API Path
+- POST /v2/api/companies/{companyId}/jobs/{jobId}/close
+- POST /v2/api/companies/{companyId}/jobs/{jobId}/archive
+- DELETE /v2/api/companies/{companyId}/jobs/{jobId}
+
+Related UC
+UC-14
+
+Related FR
+FR-REC-08
+
+Related BR
+BR-JOB-02, BR-JOB-06, BR-AUDIT-01
+
+Related VAL
+VAL-JOB-12, VAL-GEN-01
+
+Acceptance Criteria
+1. Only authorized company members can act on the job.
+2. Status transitions follow DRAFT/PUBLISHED/CLOSED/ARCHIVED rules.
+3. A job with applications is not hard-deleted.
+4. Deleted or archived jobs disappear from public search.
+5. The action is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Create and Update a Draft Job",High,5,,jobs,lifecycle,soft-delete,backend,journey-05-company-jobs,2022,1005,05.06
+Sub-task,"[05.06.01] Implement lifecycle actions, soft deletion, and historical retention","Implementation Layer
+Business Logic / Data
+
+Parent Story
+[05.06][UC-14] Close, Archive, or Soft-delete a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,jobs,lifecycle,soft-delete,backend,journey-05-company-jobs,4066,2022,05.06.01
+Sub-task,"[05.06.02] Expose close, archive, and delete actions","Implementation Layer
+API / Security
+
+Parent Story
+[05.06][UC-14] Close, Archive, or Soft-delete a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,lifecycle,soft-delete,backend,journey-05-company-jobs,4067,2022,05.06.02
+Sub-task,[05.06.03] Add lifecycle tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[05.06][UC-14] Close, Archive, or Soft-delete a Job
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,jobs,lifecycle,soft-delete,backend,journey-05-company-jobs,4068,2022,05.06.03
+Epic,[06] Process Recruitment Applications,"Recruiter applicant discovery, applicant details, and application-status transitions.",Highest,,,journey-06-recruitment,backend,jobportal,,,1006,,06.00
+Story,[06.01][UC-15] View and Filter Company Applications,"Description
+Return applications for a company job using pagination, status filtering, and time sorting.
+
+HTTP Method / API Path
+- GET /v2/api/companies/{companyId}/jobs/{jobId}/applications
+
+Related UC
+UC-15
+
+Related FR
+FR-REC-09
+
+Related BR
+BR-APP-05
+
+Related VAL
+VAL-GEN-01, VAL-GEN-03
+
+Acceptance Criteria
+1. Only an active member of the owning company can view the list.
+2. Filtering and pagination are validated.
+3. Applications from other companies are never returned.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Company membership
+- Submitted job applications",High,3,,recruitment,applications,recruiter,backend,journey-06-recruitment,2023,1006,06.01
+Sub-task,[06.01.01] Implement company-scoped application list query,"Implementation Layer
+Repository / Security
+
+Parent Story
+[06.01][UC-15] View and Filter Company Applications
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,recruitment,applications,recruiter,backend,journey-06-recruitment,4069,2023,06.01.01
+Sub-task,[06.01.02] Expose application list API with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[06.01][UC-15] View and Filter Company Applications
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,recruitment,applications,recruiter,backend,journey-06-recruitment,4070,2023,06.01.02
+Story,[06.02][UC-15] View Applicant Details,"Description
+Allow an authorized company Recruiter to view the applicant profile, skills, resume, and cover letter for a related application.
+
+HTTP Method / API Path
+- GET /v2/api/companies/{companyId}/applications/{applicationId}
+
+Related UC
+UC-15
+
+Related FR
+FR-REC-10
+
+Related BR
+BR-APP-05
+
+Related VAL
+VAL-GEN-01
+
+Acceptance Criteria
+1. The application belongs to a company where the requester is active.
+2. Only data permitted by the privacy requirement is returned.
+3. Unrelated recruiters receive FORBIDDEN or NOT_FOUND according to the API convention.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- View and Filter Company Applications",High,3,,recruitment,applicant-detail,privacy,backend,journey-06-recruitment,2024,1006,06.02
+Sub-task,[06.02.01] Implement related-application privacy and applicant projection,"Implementation Layer
+Security / Projection
+
+Parent Story
+[06.02][UC-15] View Applicant Details
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,recruitment,applicant-detail,privacy,backend,journey-06-recruitment,4071,2024,06.02.01
+Sub-task,[06.02.02] Expose applicant detail API with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[06.02][UC-15] View Applicant Details
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,recruitment,applicant-detail,privacy,backend,journey-06-recruitment,4072,2024,06.02.02
+Story,[06.03][UC-15] Update Application Status,"Description
+Apply only a valid application-status transition for an application of the Recruiter's company and record the change.
+
+HTTP Method / API Path
+- PATCH /v2/api/companies/{companyId}/applications/{applicationId}/status
+
+Related UC
+UC-15
+
+Related FR
+FR-REC-11
+
+Related BR
+BR-APP-05, BR-APP-06, BR-AUDIT-01
+
+Related VAL
+VAL-APP-04, VAL-GEN-01
+
+Acceptance Criteria
+1. Only related active company members can update status.
+2. Transitions follow BR-APP-06.
+3. WITHDRAWN and terminal statuses cannot transition.
+4. The change is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- View and Filter Company Applications
+- Audit logging infrastructure",High,5,,recruitment,application-status,backend,journey-06-recruitment,,2025,1006,06.03
+Sub-task,[06.03.01] Implement status transition and company-ownership rules,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[06.03][UC-15] Update Application Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,recruitment,application-status,backend,journey-06-recruitment,,4073,2025,06.03.01
+Sub-task,[06.03.02] Expose application status API and transition errors,"Implementation Layer
+API / Exception Handling
+
+Parent Story
+[06.03][UC-15] Update Application Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,0.5d,recruitment,application-status,backend,journey-06-recruitment,,4074,2025,06.03.02
+Sub-task,[06.03.03] Add transition tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[06.03][UC-15] Update Application Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,recruitment,application-status,backend,journey-06-recruitment,,4075,2025,06.03.03
+Epic,[07] Administer the Platform,"Admin user management, taxonomies, company verification, and Audit Logs.",Highest,,,journey-07-administration,backend,jobportal,,,1007,,07.00
+Story,[07.01][UC-16] Search and View Users,"Description
+Allow an Admin to search and view Users by email, role, enabled status, verification status, and deletion status.
+
+HTTP Method / API Path
+- GET /v2/api/admin/users
+- GET /v2/api/admin/users/{userId}
+
+Related UC
+UC-16
+
+Related FR
+FR-ADM-01
+
+Related BR
+BR-DATA-01
+
+Related VAL
+VAL-AUTH-01, VAL-GEN-01, VAL-GEN-03
+
+Acceptance Criteria
+1. Only Admin can access the APIs.
+2. Pagination and filters are supported.
+3. Verification status is distinguishable from administrative disable status.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Authentication and Admin authorization",High,3,,admin,users,backend,journey-07-administration,,2026,1007,07.01
+Sub-task,[07.01.01] Implement Admin user search and profile projection,"Implementation Layer
+Repository / Query
+
+Parent Story
+[07.01][UC-16] Search and View Users
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,users,backend,journey-07-administration,,4076,2026,07.01.01
+Sub-task,[07.01.02] Expose Admin user list/detail APIs,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[07.01][UC-16] Search and View Users
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,users,backend,journey-07-administration,,4077,2026,07.01.02
+Story,[07.02][UC-16] Change User Account Status,"Description
+Allow an Admin to enable, disable, soft-delete, or restore a User while protecting the current Admin account and invalidating sessions.
+
+HTTP Method / API Path
+- PATCH /v2/api/admin/users/{userId}/status
+- DELETE /v2/api/admin/users/{userId}
+- POST /v2/api/admin/users/{userId}/restore
+
+Related UC
+UC-16
+
+Related FR
+FR-ADM-01, FR-ADM-02
+
+Related BR
+BR-ADMIN-01, BR-DATA-01, BR-AUDIT-01, BR-AUTH-05
+
+Related VAL
+VAL-GEN-01, VAL-AUTH-01
+
+Acceptance Criteria
+1. The current Admin cannot disable or delete themselves.
+2. Disable and soft-delete remove all User refresh tokens.
+3. Restore fails when email conflicts.
+4. Every status change is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Search and View Users
+- Refresh-token session persistence
+- Audit logging",High,5,,admin,users,account-status,backend,journey-07-administration,2027,1007,07.02
+Sub-task,[07.02.01] Implement account-status rules and session invalidation,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[07.02][UC-16] Change User Account Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1.5d,admin,users,account-status,backend,journey-07-administration,4078,2027,07.02.01
+Sub-task,"[07.02.02] Implement soft delete, restore, and status endpoints","Implementation Layer
+Data / API
+
+Parent Story
+[07.02][UC-16] Change User Account Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,users,account-status,backend,journey-07-administration,4079,2027,07.02.02
+Sub-task,[07.02.03] Add Admin status tests and documentation,"Implementation Layer
+Testing / Documentation
+
+Parent Story
+[07.02][UC-16] Change User Account Status
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,users,account-status,backend,journey-07-administration,4080,2027,07.02.03
+Story,[07.03][UC-17] Manage Job Taxonomy,"Description
+Allow an Admin to list, create, update, and deactivate Job Categories and Job Subcategories.
+
+HTTP Method / API Path
+- GET/POST/PUT/PATCH /v2/api/admin/job-categories[/{categoryId}]
+- GET/POST/PUT/PATCH /v2/api/admin/job-subcategories[/{subcategoryId}]
+
+Related UC
+UC-17
+
+Related FR
+FR-ADM-03
+
+Related BR
+BR-ADMIN-02, BR-AUDIT-01
+
+Related VAL
+VAL-TAX-01, VAL-TAX-02, VAL-TAX-03, VAL-TAX-04, VAL-TAX-05, VAL-GEN-01, VAL-GEN-03
+
+Acceptance Criteria
+1. Names and slugs are unique in their scopes.
+2. Subcategory belongs to an active Category.
+3. Referenced active taxonomy is deactivated rather than hard-deleted.
+4. Changes are audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Admin authorization
+- Audit logging",High,5,,admin,taxonomy,job-categories,backend,journey-07-administration,2028,1007,07.03
+Sub-task,[07.03.01] Implement job taxonomy persistence and relations,"Implementation Layer
+Domain / Persistence
+
+Parent Story
+[07.03][UC-17] Manage Job Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,job-categories,backend,journey-07-administration,4081,2028,07.03.01
+Sub-task,"[07.03.02] Implement uniqueness, parent, and deactivation rules","Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[07.03][UC-17] Manage Job Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,job-categories,backend,journey-07-administration,4082,2028,07.03.02
+Sub-task,[07.03.03] Expose job-taxonomy APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[07.03][UC-17] Manage Job Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,job-categories,backend,journey-07-administration,4083,2028,07.03.03
+Story,[07.04][UC-17] Manage Skill Taxonomy,"Description
+Allow an Admin to list, create, update, and deactivate Skill Categories and Skills.
+
+HTTP Method / API Path
+- GET/POST/PUT/PATCH /v2/api/admin/skill-categories[/{skillCategoryId}]
+- GET/POST/PUT/PATCH /v2/api/admin/skills[/{skillId}]
+
+Related UC
+UC-17
+
+Related FR
+FR-ADM-04
+
+Related BR
+BR-ADMIN-02, BR-AUDIT-01
+
+Related VAL
+VAL-TAX-01, VAL-TAX-02, VAL-TAX-03, VAL-TAX-05, VAL-GEN-01, VAL-GEN-03
+
+Acceptance Criteria
+1. Names and slugs are unique in their scopes.
+2. Referenced active skills are deactivated rather than hard-deleted.
+3. Inactive skills cannot be selected for new profiles or jobs.
+4. Changes are audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Admin authorization
+- Audit logging",High,5,,admin,taxonomy,skills,backend,journey-07-administration,2029,1007,07.04
+Sub-task,[07.04.01] Implement skill taxonomy persistence and relations,"Implementation Layer
+Domain / Persistence
+
+Parent Story
+[07.04][UC-17] Manage Skill Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,skills,backend,journey-07-administration,4084,2029,07.04.01
+Sub-task,[07.04.02] Implement uniqueness and deactivation rules,"Implementation Layer
+Validation / Business Logic
+
+Parent Story
+[07.04][UC-17] Manage Skill Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,skills,backend,journey-07-administration,4085,2029,07.04.02
+Sub-task,[07.04.03] Expose skill-taxonomy APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[07.04][UC-17] Manage Skill Taxonomy
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,taxonomy,skills,backend,journey-07-administration,4086,2029,07.04.03
+Story,[07.05][UC-18] Verify or Revoke Company Verification,"Description
+Allow an Admin to verify an eligible company or revoke verification and record the decision.
+
+HTTP Method / API Path
+- GET /v2/api/admin/companies?verified=false
+- PATCH /v2/api/admin/companies/{companyId}/verification
+
+Related UC
+UC-18
+
+Related FR
+FR-ADM-05
+
+Related BR
+BR-COMP-01, BR-AUDIT-01
+
+Related VAL
+VAL-GEN-01
+
+Acceptance Criteria
+1. Only Admin can change verification status.
+2. Soft-deleted companies cannot be verified.
+3. Repeated state change is idempotent.
+4. The change is audited.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Company data
+- Audit logging",High,3,,admin,company-verification,backend,journey-07-administration,,2030,1007,07.05
+Sub-task,[07.05.01] Implement company verification-state rules,"Implementation Layer
+Business Logic / Security
+
+Parent Story
+[07.05][UC-18] Verify or Revoke Company Verification
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,company-verification,backend,journey-07-administration,,4087,2030,07.05.01
+Sub-task,[07.05.02] Expose verification APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[07.05][UC-18] Verify or Revoke Company Verification
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,company-verification,backend,journey-07-administration,,4088,2030,07.05.02
+Story,[07.06][UC-19] View and Filter Audit Logs,"Description
+Allow an Admin to search, filter, paginate, and view immutable Audit Log records.
+
+HTTP Method / API Path
+- GET /v2/api/admin/audit-logs
+- GET /v2/api/admin/audit-logs/{auditLogId}
+
+Related UC
+UC-19
+
+Related FR
+FR-ADM-06
+
+Related BR
+BR-AUDIT-02
+
+Related VAL
+VAL-GEN-01, VAL-GEN-03, VAL-AUDIT-01, VAL-AUDIT-02
+
+Acceptance Criteria
+1. Only Admin can access Audit Logs.
+2. Date, action, and entity filters are validated.
+3. Audit Log is append-only and cannot be modified through business APIs.
+
+Definition of Done
+- Implementation follows Controller-Service-Repository layering and separates DTOs from Entities.
+- Referenced Business Rules and Validation Rules are enforced in the backend.
+- Errors use the common error structure with error code, message, path, and fieldErrors when applicable.
+- Security and ownership checks are performed in the backend.
+- Service/controller tests cover rules and error cases; an integration test covers the primary flow.
+- Swagger/OpenAPI documents request, response, status codes, security, and the API path.
+
+Dependencies
+- Audit logging infrastructure",High,3,,admin,audit-log,backend,journey-07-administration,,2031,1007,07.06
+Sub-task,[07.06.01] Implement Audit Log filtering and detail queries,"Implementation Layer
+Repository / Query
+
+Parent Story
+[07.06][UC-19] View and Filter Audit Logs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,audit-log,backend,journey-07-administration,,4089,2031,07.06.01
+Sub-task,[07.06.02] Expose Audit Log read APIs with tests and documentation,"Implementation Layer
+API / Testing / Documentation
+
+Parent Story
+[07.06][UC-19] View and Filter Audit Logs
+
+Expected Outcome
+Complete this layer-level work package without splitting it into individual class-creation tickets.",Medium,,1d,admin,audit-log,backend,journey-07-administration,,4090,2031,07.06.02
+Epic,[08] Platform Quality and Shared Services,Cross-cutting system behavior and non-functional requirements.,Highest,,,journey-08-platform,backend,jobportal,,,1008,,08.00
+Task,[08.01] Establish MySQL Schema and Migrations,"Description
+Create versioned database migrations, foreign keys, unique constraints, enums/CHECK constraints, UTC auditing fields, OTP and refresh-token tables, and required indexes.
+
+Related SRS Requirements
+FR-SYS-01, FR-SYS-02, NFR-DB-01, NFR-REL-02
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3001,1008,08.01
+Sub-task,[08.01.01] Implement core schema and reference constraints,"Implementation Layer
+Database
+
+Parent Task
+[08.01] Establish MySQL Schema and Migrations",Medium,,2d,journey-08-platform,platform,backend,,,5091,3001,08.01.01
+Sub-task,[08.01.02] Implement authentication OTP and refresh-token migrations,"Implementation Layer
+Database
+
+Parent Task
+[08.01] Establish MySQL Schema and Migrations",Medium,,1d,journey-08-platform,platform,backend,,,5092,3001,08.01.02
+Sub-task,[08.01.03] Add migration and constraint verification tests,"Implementation Layer
+Testing
+
+Parent Task
+[08.01] Establish MySQL Schema and Migrations",Medium,,1d,journey-08-platform,platform,backend,,,5093,3001,08.01.03
+Task,[08.02] Implement Consistent API Error Handling,"Description
+Provide the shared error response containing error code, message, path, and fieldErrors and apply consistent HTTP status codes.
+
+Related SRS Requirements
+FR-SYS-04, NFR-API-01
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3002,1008,08.02
+Sub-task,[08.02.01] Implement global exception and validation mapping,"Implementation Layer
+Exception Handling
+
+Parent Task
+[08.02] Implement Consistent API Error Handling",Medium,,1d,journey-08-platform,platform,backend,,,5094,3002,08.02.01
+Sub-task,[08.02.02] Test and document standard error responses,"Implementation Layer
+Testing / Documentation
+
+Parent Task
+[08.02] Implement Consistent API Error Handling",Medium,,1d,journey-08-platform,platform,backend,,,5095,3002,08.02.02
+Task,[08.03] Implement Audit Logging Infrastructure,"Description
+Provide reusable append-only Audit Log creation for the operations required by BR-AUDIT-01 without logging secrets.
+
+Related SRS Requirements
+FR-SYS-03, NFR-OBS-01
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3003,1008,08.03
+Sub-task,[08.03.01] Implement append-only Audit Log persistence,"Implementation Layer
+Domain / Persistence
+
+Parent Task
+[08.03] Implement Audit Logging Infrastructure",Medium,,1d,journey-08-platform,platform,backend,,,5096,3003,08.03.01
+Sub-task,[08.03.02] Integrate reusable audit context and actor metadata,"Implementation Layer
+Integration
+
+Parent Task
+[08.03] Implement Audit Logging Infrastructure",Medium,,1d,journey-08-platform,platform,backend,,,5097,3003,08.03.02
+Sub-task,[08.03.03] Add Audit Log infrastructure tests,"Implementation Layer
+Testing
+
+Parent Task
+[08.03] Implement Audit Logging Infrastructure",Medium,,1d,journey-08-platform,platform,backend,,,5098,3003,08.03.03
+Task,[08.04] Implement Soft Delete and Default Filtering,"Description
+Apply soft deletion/deactivation and exclude deleted data from normal list APIs while allowing Admin-authorized access when specified.
+
+Related SRS Requirements
+FR-SYS-02, FR-SYS-05
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3004,1008,08.04
+Sub-task,[08.04.01] Implement shared soft-delete conventions and filters,"Implementation Layer
+Data / Repository
+
+Parent Task
+[08.04] Implement Soft Delete and Default Filtering",Medium,,1.5d,journey-08-platform,platform,backend,,,5099,3004,08.04.01
+Sub-task,[08.04.02] Add soft-delete visibility and Admin access tests,"Implementation Layer
+Testing
+
+Parent Task
+[08.04] Implement Soft Delete and Default Filtering",Medium,,1d,journey-08-platform,platform,backend,,,5100,3004,08.04.02
+Task,"[08.05] Configure JWT, Secrets, and Secure Logging","Description
+Configure JWT validation, password hashing, secret handling, HTTPS assumptions, secure token/OTP hashing, correlation IDs, and log redaction.
+
+Related SRS Requirements
+NFR-SEC-01, NFR-SEC-02, NFR-SEC-03, NFR-SEC-04, NFR-SEC-06, NFR-OBS-01
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3005,1008,08.05
+Sub-task,"[08.05.01] Configure password encoder, JWT encoder/decoder, and authorization baseline","Implementation Layer
+Security
+
+Parent Task
+[08.05] Configure JWT, Secrets, and Secure Logging",Medium,,2d,journey-08-platform,platform,backend,,,5101,3005,08.05.01
+Sub-task,[08.05.02] Implement secret hashing and log redaction,"Implementation Layer
+Security / Observability
+
+Parent Task
+[08.05] Configure JWT, Secrets, and Secure Logging",Medium,,1d,journey-08-platform,platform,backend,,,5102,3005,08.05.02
+Sub-task,[08.05.03] Add security configuration tests,"Implementation Layer
+Testing
+
+Parent Task
+[08.05] Configure JWT, Secrets, and Secure Logging",Medium,,1d,journey-08-platform,platform,backend,,,5103,3005,08.05.03
+Task,[08.06] Configure Email Delivery and Authentication Cleanup,"Description
+Configure SMTP email delivery and cleanup of expired OTP and refresh-token records on access and through scheduled maintenance.
+
+Related SRS Requirements
+FR-SYS-07, NFR-REL-03
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3006,1008,08.06
+Sub-task,[08.06.01] Configure SMTP adapter and environment properties,"Implementation Layer
+Integration
+
+Parent Task
+[08.06] Configure Email Delivery and Authentication Cleanup",Medium,,1d,journey-08-platform,platform,backend,,,5104,3006,08.06.01
+Sub-task,[08.06.02] Implement expired authentication-record cleanup,"Implementation Layer
+Business Logic / Scheduling
+
+Parent Task
+[08.06] Configure Email Delivery and Authentication Cleanup",Medium,,1d,journey-08-platform,platform,backend,,,5105,3006,08.06.02
+Sub-task,[08.06.03] Add email adapter and cleanup tests,"Implementation Layer
+Testing
+
+Parent Task
+[08.06] Configure Email Delivery and Authentication Cleanup",Medium,,1d,journey-08-platform,platform,backend,,,5106,3006,08.06.03
+Task,[08.07] Publish Swagger/OpenAPI Documentation,"Description
+Expose Swagger/OpenAPI for all MVP endpoints, request/response models, status codes, security schemes, and versioned paths.
+
+Related SRS Requirements
+FR-SYS-06, NFR-MNT-02
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3007,1008,08.07
+Sub-task,[08.07.01] Configure OpenAPI security and common schemas,"Implementation Layer
+Documentation
+
+Parent Task
+[08.07] Publish Swagger/OpenAPI Documentation",Medium,,1d,journey-08-platform,platform,backend,,,5107,3007,08.07.01
+Sub-task,[08.07.02] Verify endpoint coverage and documentation accessibility,"Implementation Layer
+Documentation / Testing
+
+Parent Task
+[08.07] Publish Swagger/OpenAPI Documentation",Medium,,1d,journey-08-platform,platform,backend,,,5108,3007,08.07.02
+Task,[08.08] Enforce Layered Architecture and DTO Separation,"Description
+Apply Controller-Service-Repository boundaries and keep request/response DTOs separated from persistence Entities.
+
+Related SRS Requirements
+NFR-MNT-01
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3008,1008,08.08
+Sub-task,[08.08.01] Define package/module boundaries and mapping conventions,"Implementation Layer
+Architecture
+
+Parent Task
+[08.08] Enforce Layered Architecture and DTO Separation",Medium,,1d,journey-08-platform,platform,backend,,,5109,3008,08.08.01
+Sub-task,[08.08.02] Add architecture checks or review checklist,"Implementation Layer
+Review / Testing
+
+Parent Task
+[08.08] Enforce Layered Architecture and DTO Separation",Medium,,0.5d,journey-08-platform,platform,backend,,,5110,3008,08.08.02
+Task,[08.09] Implement Automated Test Baseline,"Description
+Provide service/controller tests for Business and Validation Rules and integration tests for UC-01 through UC-19.
+
+Related SRS Requirements
+NFR-TEST-01
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3009,1008,08.09
+Sub-task,"[08.09.01] Configure test database, fixtures, and integration-test base","Implementation Layer
+Testing
+
+Parent Task
+[08.09] Implement Automated Test Baseline",Medium,,1.5d,journey-08-platform,platform,backend,,,5111,3009,08.09.01
+Sub-task,[08.09.02] Create requirement traceability and coverage checklist,"Implementation Layer
+Testing
+
+Parent Task
+[08.09] Implement Automated Test Baseline",Medium,,1d,journey-08-platform,platform,backend,,,5112,3009,08.09.02
+Task,[08.10] Validate Read Performance and Pagination Limits,"Description
+Enforce default/max page sizes and validate the specified simple-read performance target in the test environment.
+
+Related SRS Requirements
+NFR-PERF-01, NFR-PERF-02
+
+Definition of Done
+- The referenced SRS requirements are implemented and tested.
+- Configuration is externalized where required.
+- No feature requirement outside the SRS is introduced.",High,,,journey-08-platform,platform,backend,,,3010,1008,08.10
+Sub-task,[08.10.01] Enforce common pagination defaults and maximum size,"Implementation Layer
+Performance / API
+
+Parent Task
+[08.10] Validate Read Performance and Pagination Limits",Medium,,0.5d,journey-08-platform,platform,backend,,,5113,3010,08.10.01
+Sub-task,[08.10.02] Create read-load test and record results,"Implementation Layer
+Performance Testing
+
+Parent Task
+[08.10] Validate Read Performance and Pagination Limits",Medium,,1.5d,journey-08-platform,platform,backend,,,5114,3010,08.10.02

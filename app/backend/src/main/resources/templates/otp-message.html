@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 10px;">
+<div style="max-width: 600px; margin: auto; background: white; padding: 10px; border-radius: 8px;">
+    <h2 style="color: #4CAF50;">Hello,<br>Please verify your identity !</h2>
+    <p style="font-size: 16px; color: #333;">
+        This is your <strong>OTP authentication code</strong>:
+    </p>
+
+    <h1 th:text="${otpCode}" style="letter-spacing: 20px; text-align: center;"></h1>
+
+    <p style="font-size: 16px; color: #333;">
+        This code is valid for <strong>15 minutes</strong> and can only be used once.
+        <strong>Please don't share this code with anyone.</strong>
+    </p>
+
+    <h2 style="color: #4CAF50;">Thanks, <br>The Job-Portal Team.</h2>
+
+</div>
+</body>
+</html>

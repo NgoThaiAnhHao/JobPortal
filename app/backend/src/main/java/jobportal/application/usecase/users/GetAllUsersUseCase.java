@@ -5,20 +5,24 @@ import jobportal.application.mapper.UserMapper;
 import jobportal.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-@Service
-public class GetUserByEmail {
+import java.util.List;
 
+@Service
+public class GetAllUsersUseCase {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public GetUserByEmail(UserRepository userRepository, UserMapper userMapper) {
+    public GetAllUsersUseCase(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
-    public UserResponse execute(String email) {
-        return userMapper.toResponse(
-                userRepository.findByEmail(email)
-        );
+
+    public List<UserResponse> execute() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(userMapper::toResponse)
+                .toList();
     }
 }

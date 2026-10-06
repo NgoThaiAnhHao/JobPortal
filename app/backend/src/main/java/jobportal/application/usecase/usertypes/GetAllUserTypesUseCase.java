@@ -7,15 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
-
 @Service
-public class GetAllUserTypes {
+public class GetAllUserTypesUseCase {
 
     private final UserTypeRepository userTypeRepository;
     private final UserTypeMapper userTypeMapper;
 
-    public GetAllUserTypes(UserTypeRepository userTypeRepository, UserTypeMapper userTypeMapper) {
+    public GetAllUserTypesUseCase(UserTypeRepository userTypeRepository, UserTypeMapper userTypeMapper) {
         this.userTypeRepository = userTypeRepository;
         this.userTypeMapper = userTypeMapper;
     }

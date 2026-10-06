@@ -1,6 +1,7 @@
 package jobportal.infrastructure.persistence.usertypes;
 
 import jobportal.domain.entity.UserType;
+import jobportal.domain.enums.UserTypeEnum;
 import jobportal.domain.repository.UserTypeRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +19,10 @@ public class UserTypeRepositoryImpl implements UserTypeRepository {
     @Override
     public List<UserType> findAll() {
         return jpaUserTypeRepository.findAll();
+    }
+
+    @Override
+    public UserType findByUserTypeEnum(UserTypeEnum userTypeEnum) {
+        return jpaUserTypeRepository.findByUserTypeEnum(userTypeEnum);
     }
 }

@@ -3,18 +3,22 @@ package jobportal.infrastructure.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jobportal.application.services.TokenService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
-public class JwtUtil {
-    private static final String SECRET_KEY =
-            "my-super-secure-secret-key-for-jwt-signing-12345";
+public class JwtUtil implements TokenService {
+    @Value("${spring.jwt.secret}")
+    private String SECRET_KEY;
 
-    private static final long EXPIRATION = 15 * 60 * 1000;
+    @Value("${spring.jwt.expiration}")
+    private long EXPIRATION;
 
-    public String generateToken(String username) {
+    @Override
+    public String generateAccessToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date()) // Thời gian tạo token

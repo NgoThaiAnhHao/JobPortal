@@ -2,34 +2,38 @@ package jobportal.application.usecase.authentication;
 
 import jobportal.application.dto.authentication.LoginRequest;
 import jobportal.application.dto.authentication.LoginResponse;
-import jobportal.application.dto.user.UserResponse;
-import jobportal.application.usecase.users.GetUserByEmail;
+
+import jobportal.application.services.TokenService;
+import jobportal.application.utils.TokenHashUtils;
+import jobportal.domain.entity.RefreshToken;
 import jobportal.domain.entity.User;
-import jobportal.infrastructure.security.CustomUserDetails;
-import jobportal.infrastructure.security.JwtUtil;
+import jobportal.domain.repository.RefreshTokenRepository;
+import jobportal.domain.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class LoginUseCase {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
-    private final GetUserByEmail getUserByEmail;
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public LoginUseCase(AuthenticationManager authenticationManager, JwtUtil jwtUtil, GetUserByEmail getUserByEmail) {
+    public LoginUseCase(AuthenticationManager authenticationManager, TokenService tokenService, UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-        this.getUserByEmail = getUserByEmail;
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
+    @Transactional
     public LoginResponse execute(LoginRequest loginRequest) {
-        System.out.println("EMAIL = " + loginRequest.getEmail());
-        System.out.println("PASSWORD = " + loginRequest.getPassword());
-
         // Authenticate
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -39,20 +43,23 @@ public class LoginUseCase {
         );
 
         // Get current user details
-        CustomUserDetails currentUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (currentUserDetails == null) {
-            throw new UsernameNotFoundException("Current user not found.");
-        }
+        String email = authentication.getName();
 
         // Get current user entity
-        UserResponse currentUser = getUserByEmail.execute(currentUserDetails.getUsername());
+        User currentUser = userRepository.findByEmail(email);
+
+        // Clear old refreshToken if exists
+        refreshTokenRepository.deleteByUser(currentUser);
+
+        // Create refresh token
+        String rawRefreshToken = refreshTokenRepository.generateRefreshToken(currentUser);
 
         // Create JWT token
-        String accessToken = jwtUtil.generateToken(currentUser.getEmail());
+        String accessToken = tokenService.generateAccessToken(currentUser.getEmail());
         return new LoginResponse(
-              accessToken,
-              null,
-              currentUser.getUserType().getUserTypeEnum().toString()
+                accessToken,
+                rawRefreshToken,
+                currentUser.getUserType().getUserTypeEnum().toString()
         );
     };
 }

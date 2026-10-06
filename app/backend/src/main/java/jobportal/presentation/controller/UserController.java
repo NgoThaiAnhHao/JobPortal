@@ -1,8 +1,7 @@
 package jobportal.presentation.controller;
 
 import jobportal.application.dto.user.UserResponse;
-import jobportal.application.usecase.users.GetAllUsers;
-import jobportal.domain.entity.User;
+import jobportal.application.usecase.users.GetAllUsersUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,14 +12,14 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final GetAllUsers getAllUsers;
+    private final GetAllUsersUseCase getAllUsersUseCase;
 
-    public UserController(GetAllUsers getAllUsers) {
-        this.getAllUsers = getAllUsers;
+    public UserController(GetAllUsersUseCase getAllUsersUseCase) {
+        this.getAllUsersUseCase = getAllUsersUseCase;
     }
 
     @GetMapping
     public List<UserResponse> getAllUsers() {
-        return getAllUsers.execute();
+        return getAllUsersUseCase.execute();
     }
 }

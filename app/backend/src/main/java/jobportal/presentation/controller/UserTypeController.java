@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usertypes")
+@RequestMapping("/usertypes")
 public class UserTypeController {
 
     private final GetAllUserTypes getAllUserTypes;

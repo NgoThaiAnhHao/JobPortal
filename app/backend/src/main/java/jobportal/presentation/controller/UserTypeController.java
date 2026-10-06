@@ -1,7 +1,7 @@
 package jobportal.presentation.controller;
 
 import jobportal.application.dto.usertypes.UserTypeResponse;
-import jobportal.application.usecase.usertypes.GetAllUserTypesUseCase;
+import jobportal.application.use_cases.user_types.GetAllUserTypesUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

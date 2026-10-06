@@ -15,6 +15,4 @@ public interface UserRepository {
     boolean isAdminExist(UserType userType);
 
     User save(User user);
-
-    User getCurrentUserWasLoggedIn();
 }

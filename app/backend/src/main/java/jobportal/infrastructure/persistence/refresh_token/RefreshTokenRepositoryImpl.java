@@ -3,6 +3,7 @@ package jobportal.infrastructure.persistence.refresh_token;
 import jobportal.application.utils.TokenHashUtils;
 import jobportal.domain.entity.RefreshToken;
 import jobportal.domain.entity.User;
+import jobportal.domain.exception.common.ResourceNotFoundException;
 import jobportal.domain.repository.RefreshTokenRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
@@ -30,9 +31,9 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     @Override
     public RefreshToken findByTokenHash(String tokenHash) {
         return jpaRefreshTokenRepository
-                .findByTokenHash(tokenHash)
+                .findByToken(tokenHash)
                 .orElseThrow(() ->
-                        new RuntimeException("Token is not exists.")
+                        new ResourceNotFoundException("Token is not exists.")
                 );
     }
 

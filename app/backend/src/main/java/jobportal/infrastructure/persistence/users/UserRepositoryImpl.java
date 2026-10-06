@@ -2,10 +2,9 @@ package jobportal.infrastructure.persistence.users;
 
 import jobportal.domain.entity.User;
 import jobportal.domain.entity.UserType;
+import jobportal.domain.exception.common.authentication.UserNotFoundException;
 import jobportal.domain.repository.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository
                 .findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found.")
+                        new UserNotFoundException("User not found.")
                 );
     }
 
@@ -45,10 +44,5 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         return jpaUserRepository.save(user);
-    }
-
-    @Override
-    public User getCurrentUserWasLoggedIn() {
-        return null;
     }
 }

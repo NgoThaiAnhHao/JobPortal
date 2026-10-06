@@ -8,12 +8,12 @@ import jobportal.application.dto.authentication.RefreshTokenRequest;
 import jobportal.application.dto.authentication.RegisterRequest;
 import jobportal.application.dto.verification_otp.EmailRequest;
 import jobportal.application.dto.verification_otp.VerifyOtpRequest;
-import jobportal.application.usecase.authentication.LoginUseCase;
-import jobportal.application.usecase.authentication.LogoutUseCase;
-import jobportal.application.usecase.refresh_token.RefreshAnAccessTokenUseCase;
-import jobportal.application.usecase.authentication.RegisterUseCase;
-import jobportal.application.usecase.vertification_otp.ResendOtpCodeUseCase;
-import jobportal.application.usecase.vertification_otp.VerifyOtpCodeUseCase;
+import jobportal.application.use_cases.authentication.LoginUseCase;
+import jobportal.application.use_cases.authentication.LogoutUseCase;
+import jobportal.application.use_cases.refresh_token.RefreshAnAccessTokenUseCase;
+import jobportal.application.use_cases.authentication.RegisterUseCase;
+import jobportal.application.use_cases.vertification_otp.ResendOtpCodeUseCase;
+import jobportal.application.use_cases.vertification_otp.VerifyOtpCodeUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,11 +1,9 @@
-package jobportal.application.usecase.authentication;
+package jobportal.application.use_cases.authentication;
 
 import jobportal.application.dto.authentication.LoginRequest;
 import jobportal.application.dto.authentication.LoginResponse;
 
 import jobportal.application.services.TokenService;
-import jobportal.application.utils.TokenHashUtils;
-import jobportal.domain.entity.RefreshToken;
 import jobportal.domain.entity.User;
 import jobportal.domain.repository.RefreshTokenRepository;
 import jobportal.domain.repository.UserRepository;
@@ -14,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 public class LoginUseCase {

@@ -1,14 +1,19 @@
-package jobportal.application.usecase.authentication;
+package jobportal.application.use_cases.authentication;
 
 import jakarta.mail.MessagingException;
 import jobportal.application.dto.authentication.RegisterRequest;
 import jobportal.application.dto.user.UserResponse;
 import jobportal.application.mapper.UserMapper;
-import jobportal.application.usecase.users.GetUserByEmailUseCase;
-import jobportal.application.usecase.vertification_otp.SendVerifyOtpCodeUseCase;
+import jobportal.application.use_cases.users.GetUserByEmailUseCase;
+import jobportal.application.use_cases.vertification_otp.SendVerifyOtpCodeUseCase;
 import jobportal.domain.entity.User;
 import jobportal.domain.entity.UserType;
 import jobportal.domain.enums.UserTypeEnum;
+import jobportal.domain.exception.common.DuplicateResourceException;
+import jobportal.domain.exception.common.authentication.AccountDisabledException;
+import jobportal.domain.exception.common.authentication.AdminRegistrationNotAllowedException;
+import jobportal.domain.exception.common.authentication.PasswordMismatchException;
+import jobportal.domain.exception.common.authentication.RegisterFailedException;
 import jobportal.domain.repository.UserRepository;
 import jobportal.domain.repository.UserTypeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +64,7 @@ public class RegisterUseCase {
         // Save user to db
         User savedUser = userRepository.save(user);
         if (savedUser == null) {
-            throw new RuntimeException("REGISTER FAILED");
+            throw new RegisterFailedException("Register failed.");
         }
 
         // Send Verification Otp
@@ -71,14 +76,14 @@ public class RegisterUseCase {
     private void validateRegisterEligibility(RegisterRequest registerRequest) {
         // Checking confirm password and password
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            throw new RuntimeException("Password unmatches with confirm password.");
+            throw new PasswordMismatchException("Password unmatches with confirm password.");
         }
 
         // Checking User Type Request is valid? (Type ADMIN: INVALID)
         if ("ADMIN".equals(
                 registerRequest.getUserTypeEnum().toString()
         ))  {
-            throw new RuntimeException("Admin is not allowed.");
+            throw new AdminRegistrationNotAllowedException("Admin is not allowed.");
         }
 
         // Checking duplicate email
@@ -87,12 +92,12 @@ public class RegisterUseCase {
 
             UserResponse user = getUserByEmail.execute(registerRequest.getEmail());
             if (user.isEnabled()) {
-                throw new RuntimeException(
+                throw new DuplicateResourceException(
                         "Email already exists."
                 );
             }
 
-            throw new RuntimeException(
+            throw new AccountDisabledException(
                     "Account not be verified."
             );
         }

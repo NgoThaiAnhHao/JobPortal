@@ -1,4 +1,4 @@
-package jobportal.application.usecase.refresh_token;
+package jobportal.application.use_cases.refresh_token;
 
 import jobportal.application.dto.authentication.LoginResponse;
 import jobportal.application.dto.authentication.RefreshTokenRequest;
@@ -6,6 +6,9 @@ import jobportal.application.services.TokenService;
 import jobportal.application.utils.TokenHashUtils;
 import jobportal.domain.entity.RefreshToken;
 import jobportal.domain.entity.User;
+import jobportal.domain.exception.common.authentication.AccountDisabledException;
+import jobportal.domain.exception.common.authentication.UserNotFoundException;
+import jobportal.domain.exception.common.refresh_token.TokenExpiredException;
 import jobportal.domain.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,19 +58,19 @@ public class RefreshAnAccessTokenUseCase {
         // Check user account was be deleted
         if (user == null) {
             refreshTokenRepository.delete(refreshTokenFound);
-            throw new RuntimeException("Account was be deleted.");
+            throw new UserNotFoundException("Account was be deleted.");
         }
 
         // Check user not verified
         if (!user.isEnabled()) {
             refreshTokenRepository.delete(refreshTokenFound);
-            throw new RuntimeException("Account not be verified");
+            throw new AccountDisabledException("Account not be verified");
         }
 
         // Check expired token
         if (refreshTokenFound.getExpiredAt().isBefore(LocalDateTime.now())) {
             refreshTokenRepository.delete(refreshTokenFound);
-            throw new RuntimeException("Refresh token is expired, try login again.");
+            throw new TokenExpiredException("Refresh token is expired, try login again.");
         }
 
         return user;

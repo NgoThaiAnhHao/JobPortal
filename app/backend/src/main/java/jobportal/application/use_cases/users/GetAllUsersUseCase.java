@@ -1,4 +1,4 @@
-package jobportal.application.usecase.users;
+package jobportal.application.use_cases.users;
 
 import jobportal.application.dto.user.UserResponse;
 import jobportal.application.mapper.UserMapper;

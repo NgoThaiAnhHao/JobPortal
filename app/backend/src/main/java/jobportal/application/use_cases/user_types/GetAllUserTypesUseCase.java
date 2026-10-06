@@ -1,4 +1,4 @@
-package jobportal.application.usecase.usertypes;
+package jobportal.application.use_cases.user_types;
 
 import jobportal.application.dto.usertypes.UserTypeResponse;
 import jobportal.application.mapper.UserTypeMapper;

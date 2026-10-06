@@ -1,7 +1,10 @@
-package jobportal.application.usecase.vertification_otp;
+package jobportal.application.use_cases.vertification_otp;
 
 import jobportal.domain.entity.User;
 import jobportal.domain.entity.VerificationOtp;
+import jobportal.domain.exception.common.refresh_token.TokenExpiredException;
+import jobportal.domain.exception.common.verification.AlreadyVerifiedAccountException;
+import jobportal.domain.exception.common.verification.InvalidOtpException;
 import jobportal.domain.repository.UserRepository;
 import jobportal.domain.repository.VerificationOtpRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +33,7 @@ public class VerifyOtpCodeUseCase {
 
         // Check user is verified
         if (user.isEnabled()) {
-            throw new RuntimeException("This account was be verified.");
+            throw new AlreadyVerifiedAccountException("This account was be verified.");
         }
 
         // Get token to compare
@@ -39,12 +42,12 @@ public class VerifyOtpCodeUseCase {
 
         // Check expired
         if (verificationOtp.getExpiredAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("OTP code is expired.");
+            throw new TokenExpiredException("OTP code is expired.");
         }
 
         // Check otp
         if (!passwordEncoder.matches(inputOtpCode, verificationOtp.getOtpCode())) {
-            throw new RuntimeException("Invalid OTP code.");
+            throw new InvalidOtpException("Invalid OTP code.");
         }
 
         // Set enable and save user to db

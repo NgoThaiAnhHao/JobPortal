@@ -1,4 +1,4 @@
-package jobportal.application.usecase.vertification_otp;
+package jobportal.application.use_cases.vertification_otp;
 
 import jakarta.mail.MessagingException;
 import jobportal.domain.entity.User;

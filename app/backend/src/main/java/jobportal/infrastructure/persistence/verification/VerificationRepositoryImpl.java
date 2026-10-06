@@ -2,6 +2,7 @@ package jobportal.infrastructure.persistence.verification;
 
 import jobportal.domain.entity.User;
 import jobportal.domain.entity.VerificationOtp;
+import jobportal.domain.exception.common.authentication.UserNotFoundException;
 import jobportal.domain.repository.VerificationOtpRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,7 @@ public class VerificationRepositoryImpl implements VerificationOtpRepository {
         return jpaVerificationRepository
                 .findByUser(user)
                 .orElseThrow(() ->
-                    new RuntimeException("User not found.")
+                    new UserNotFoundException("User not found.")
                 );
     }
 

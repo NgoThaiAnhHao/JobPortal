@@ -1,4 +1,4 @@
-package jobportal.application.usecase.authentication;
+package jobportal.application.use_cases.authentication;
 
 import jobportal.application.dto.authentication.RefreshTokenRequest;
 import jobportal.application.utils.TokenHashUtils;

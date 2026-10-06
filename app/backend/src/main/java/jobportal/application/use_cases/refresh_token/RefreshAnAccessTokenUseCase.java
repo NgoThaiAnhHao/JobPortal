@@ -2,7 +2,7 @@ package jobportal.application.use_cases.refresh_token;
 
 import jobportal.application.dto.authentication.LoginResponse;
 import jobportal.application.dto.authentication.RefreshTokenRequest;
-import jobportal.application.services.TokenService;
+import jobportal.application.services.JwtService;
 import jobportal.application.utils.TokenHashUtils;
 import jobportal.domain.entity.RefreshToken;
 import jobportal.domain.entity.User;
@@ -18,11 +18,11 @@ import java.time.LocalDateTime;
 @Service
 public class RefreshAnAccessTokenUseCase {
 
-    private final TokenService tokenService;
+    private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public RefreshAnAccessTokenUseCase(TokenService tokenService, RefreshTokenRepository refreshTokenRepository) {
-        this.tokenService = tokenService;
+    public RefreshAnAccessTokenUseCase(JwtService jwtService, RefreshTokenRepository refreshTokenRepository) {
+        this.jwtService = jwtService;
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
@@ -31,6 +31,9 @@ public class RefreshAnAccessTokenUseCase {
         // Validate refresh token and return current user who logged in
         User currentUser = validateRefreshTokenEligibility(refreshTokenRequest);
 
+        // Get role
+        String role = currentUser.getUserType().getUserTypeEnum().toString();
+
         // Clear old refreshToken if exists
         refreshTokenRepository.deleteByUser(currentUser);
 
@@ -38,12 +41,15 @@ public class RefreshAnAccessTokenUseCase {
         String rawRefreshToken = refreshTokenRepository.generateRefreshToken(currentUser);
 
         // Generate new access token
-        String accessToken = tokenService.generateAccessToken(currentUser.getEmail());
+        String accessToken = jwtService.generateAccessToken(
+                currentUser.getEmail(),
+                role
+        );
 
         return new LoginResponse(
                 accessToken,
                 rawRefreshToken,
-                currentUser.getUserType().getUserTypeEnum().toString()
+                role
         );
     }
 

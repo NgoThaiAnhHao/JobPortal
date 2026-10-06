@@ -104,4 +104,15 @@ public class AuthenticationExceptionHandler {
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserNotAuthenticatedException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserNotAuthenticatedException(
+            UserNotAuthenticatedException e) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "User_Not_Authenticated",
+                Map.of("login", e.getMessage())
+        );
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }

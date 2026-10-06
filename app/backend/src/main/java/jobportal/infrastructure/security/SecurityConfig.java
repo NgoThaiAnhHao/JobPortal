@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,6 +43,13 @@ public class SecurityConfig {
                 // Tắt cơ chế csrf để xác thực API
                 .csrf(AbstractHttpConfigurer::disable)
 
+                // Tắt session để sử dụng JWT
+                .sessionManagement(session ->
+                    session.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS
+                    )
+                )
+
                 // ENDPOINTS CONFIGURATION
                 .authorizeHttpRequests(request ->
                     {
@@ -54,7 +62,12 @@ public class SecurityConfig {
                         // ANY ENDPOINTS
                         request.anyRequest().authenticated();
                     }
-                );
+                )
+
+                // OAUTH 2 RESOURCE SERVER AND JWT
+                .oauth2ResourceServer((oauth2) -> oauth2
+                .jwt(Customizer.withDefaults())
+        );;
 
         return http.build();
     }

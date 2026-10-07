@@ -10,6 +10,7 @@ import jobportal.infrastructure.persistence.profiles.JpaAdminProfileRepository;
 import jobportal.infrastructure.persistence.profiles.JpaJobSeekerProfileRepository;
 import jobportal.infrastructure.persistence.profiles.JpaRecruiterProfileRepository;
 import jobportal.infrastructure.persistence.users.JpaUserRepository;
+import jobportal.infrastructure.seeder.constants.SeedUserConstants;
 import org.springframework.stereotype.Component;
 
 @Component

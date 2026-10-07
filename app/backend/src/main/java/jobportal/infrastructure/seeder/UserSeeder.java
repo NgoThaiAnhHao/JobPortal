@@ -6,6 +6,7 @@ import jobportal.domain.enums.ProviderEnum;
 import jobportal.domain.enums.UserTypeEnum;
 import jobportal.infrastructure.persistence.users.JpaUserRepository;
 import jobportal.infrastructure.persistence.usertypes.JpaUserTypeRepository;
+import jobportal.infrastructure.seeder.constants.SeedUserConstants;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

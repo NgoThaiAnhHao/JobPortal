@@ -1,4 +1,4 @@
-package jobportal.infrastructure.seeder;
+package jobportal.infrastructure.seeder.constants;
 
 // Final class: Vì class này chỉ chứa hằng số
 public final class SeedUserConstants {

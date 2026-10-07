@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jobportal.application.dto.authentication.RegisterRequest;
 import jobportal.application.dto.user.UserResponse;
 import jobportal.application.mapper.UserMapper;
+import jobportal.application.use_cases.profiles.CreateUserProfileUseCase;
 import jobportal.application.use_cases.users.GetUserByEmailUseCase;
 import jobportal.application.use_cases.vertification_otp.SendVerifyOtpCodeUseCase;
 import jobportal.domain.entity.User;
@@ -28,15 +29,17 @@ public class RegisterUseCase {
     private final UserTypeRepository userTypeRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final SendVerifyOtpCodeUseCase sendVerifyOtpCodeUseCase;
+    private final SendVerifyOtpCodeUseCase sendVerifyOtpCode;
+    private final CreateUserProfileUseCase createUserProfile;
 
-    public RegisterUseCase(UserRepository userRepository, GetUserByEmailUseCase getUserByEmail, UserTypeRepository userTypeRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, SendVerifyOtpCodeUseCase sendVerifyOtpCodeUseCase) {
+    public RegisterUseCase(UserRepository userRepository, GetUserByEmailUseCase getUserByEmail, UserTypeRepository userTypeRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, SendVerifyOtpCodeUseCase sendVerifyOtpCode, CreateUserProfileUseCase createUserProfile) {
         this.userRepository = userRepository;
         this.getUserByEmail = getUserByEmail;
         this.userTypeRepository = userTypeRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.sendVerifyOtpCodeUseCase = sendVerifyOtpCodeUseCase;
+        this.sendVerifyOtpCode = sendVerifyOtpCode;
+        this.createUserProfile = createUserProfile;
     }
 
     @Transactional
@@ -67,8 +70,11 @@ public class RegisterUseCase {
             throw new RegisterFailedException("Register failed.");
         }
 
+        // Create profile
+        createUserProfile.execute(savedUser);
+
         // Send Verification Otp
-        sendVerifyOtpCodeUseCase.execute(user);
+        sendVerifyOtpCode.execute(user);
 
     }
 

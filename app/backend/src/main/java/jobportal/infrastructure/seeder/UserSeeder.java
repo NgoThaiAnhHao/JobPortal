@@ -38,7 +38,7 @@ public class UserSeeder {
             List.of(
                 // Admin
                 new User(
-                        "admin@gmail.com",
+                        SeedUserConstants.ADMIN_EMAIL,
                         "$2a$12$68NVxd//sMKyBwaKiqCh5OjDZoZX5HkUXukmwtUtUZS4i3tohPxrm",
                         ProviderEnum.LOCAL,
                         true,
@@ -48,7 +48,7 @@ public class UserSeeder {
 
                 // Recruiter
                 new User(
-                        "recruiter@gmail.com",
+                        SeedUserConstants.RECRUITER_EMAIL,
                         "$2a$12$68NVxd//sMKyBwaKiqCh5OjDZoZX5HkUXukmwtUtUZS4i3tohPxrm",
                         ProviderEnum.LOCAL,
                         true,
@@ -58,7 +58,7 @@ public class UserSeeder {
 
                 // Job Seeker
                 new User(
-                        "jobseeker@gmail.com",
+                        SeedUserConstants.JOB_SEEKER_EMAIL,
                         "$2a$12$68NVxd//sMKyBwaKiqCh5OjDZoZX5HkUXukmwtUtUZS4i3tohPxrm",
                         ProviderEnum.LOCAL,
                         true,

@@ -41,12 +41,10 @@ public class AdminProfile {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public AdminProfile(User user, String firstName, String lastName, String phone, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdminProfile(User user, String firstName, String lastName, String phone) {
         this.user = user;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }

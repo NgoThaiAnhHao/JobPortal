@@ -48,4 +48,15 @@ public class RecruiterProfile {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public RecruiterProfile(User user, String firstName, String lastName, String phone, String city, String country, String companyPosition, String department) {
+        this.user = user;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.city = city;
+        this.country = country;
+        this.companyPosition = companyPosition;
+        this.department = department;
+    }
 }

@@ -17,7 +17,6 @@ public class GetAllUsersUseCase {
         this.userMapper = userMapper;
     }
 
-
     public List<UserResponse> execute() {
         return userRepository
                 .findAll()

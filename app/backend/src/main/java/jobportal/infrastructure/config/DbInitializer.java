@@ -14,14 +14,16 @@ public class DbInitializer implements CommandLineRunner {
     private final CompanySeeder companySeeder;
     private final JobCategorySeeder jobCategorySeeder;
     private final JobSubCategorySeeder jobSubCategorySeeder;
+    private final JobSeeder jobSeeder;
 
-    public DbInitializer(UserTypeSeeder userTypeSeeder, UserSeeder userSeeder, ProfileSeeder profileSeeder, CompanySeeder companySeeder, JobCategorySeeder jobCategorySeeder, JobSubCategorySeeder jobSubCategorySeeder) {
+    public DbInitializer(UserTypeSeeder userTypeSeeder, UserSeeder userSeeder, ProfileSeeder profileSeeder, CompanySeeder companySeeder, JobCategorySeeder jobCategorySeeder, JobSubCategorySeeder jobSubCategorySeeder, JobSeeder jobSeeder) {
         this.userTypeSeeder = userTypeSeeder;
         this.userSeeder = userSeeder;
         this.profileSeeder = profileSeeder;
         this.companySeeder = companySeeder;
         this.jobCategorySeeder = jobCategorySeeder;
         this.jobSubCategorySeeder = jobSubCategorySeeder;
+        this.jobSeeder = jobSeeder;
     }
 
     @Override
@@ -33,5 +35,6 @@ public class DbInitializer implements CommandLineRunner {
         companySeeder.seed();
         jobCategorySeeder.seed();
         jobSubCategorySeeder.seed();
+        jobSeeder.seed();
     }
 }

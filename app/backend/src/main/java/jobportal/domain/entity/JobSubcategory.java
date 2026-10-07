@@ -51,6 +51,11 @@ public class JobSubcategory {
     @JoinColumn(name = "job_category_id", nullable = false)
     private JobCategory jobCategory;
 
+    @PrePersist
+    public void onCreate() {
+        this.isActive = true;
+    }
+
     public JobSubcategory(JobCategory jobCategory, String name, String slug) {
         this.jobCategory = jobCategory;
         this.name = name;

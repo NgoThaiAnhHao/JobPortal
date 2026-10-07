@@ -45,6 +45,11 @@ public class JobCategory {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    public void onCreate() {
+        this.isActive = true;
+    }
+
     public JobCategory(String name, String slug) {
         this.slug = slug;
         this.name = name;

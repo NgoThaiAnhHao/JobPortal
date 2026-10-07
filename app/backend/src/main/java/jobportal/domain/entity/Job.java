@@ -73,4 +73,20 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "job_subcategory_id", nullable = false)
     private JobSubcategory jobSubcategory;
+
+    public Job(String title, String description, EmploymentTypeEnum employmentType, boolean remote, BigDecimal salaryMin, BigDecimal salaryMax, String city, String country, LocalDateTime deadlineAt, JobStatusEnum status, Company company, User user, JobSubcategory jobSubcategory) {
+        this.title = title;
+        this.description = description;
+        this.employmentType = employmentType;
+        this.remote = remote;
+        this.salaryMin = salaryMin;
+        this.salaryMax = salaryMax;
+        this.city = city;
+        this.country = country;
+        this.deadlineAt = deadlineAt;
+        this.status = status;
+        this.company = company;
+        this.user = user;
+        this.jobSubcategory = jobSubcategory;
+    }
 }

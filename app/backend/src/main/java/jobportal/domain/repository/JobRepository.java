@@ -1,9 +1,22 @@
 package jobportal.domain.repository;
 
 import jobportal.domain.entity.Job;
+import jobportal.domain.enums.EmploymentTypeEnum;
+import jobportal.domain.enums.SortJobsEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 public interface JobRepository {
-    List<Job> findAll();
+    Page<Job> searchAndGetAllJobs(
+            String searchKeyword,
+            Long categoryId,
+            Long subcategoryId,
+            EmploymentTypeEnum employmentType,
+            Boolean remote,
+            BigDecimal minSalary,
+            BigDecimal maxSalary,
+            SortJobsEnum sort,
+            Pageable pageable);
 }

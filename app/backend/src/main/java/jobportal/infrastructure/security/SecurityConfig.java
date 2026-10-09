@@ -59,6 +59,9 @@ public class SecurityConfig {
                         // SWAGGER PUBLIC ENDPOINTS
                         request.requestMatchers(SWAGGER_UI_ENDPOINTS).permitAll();
 
+                        // JOBS
+                        request.requestMatchers("/jobs/**").permitAll();
+
                         // ANY ENDPOINTS
                         request.anyRequest().authenticated();
                     }

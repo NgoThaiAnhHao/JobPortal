@@ -52,7 +52,15 @@ public class JobSeekerProfile {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public JobSeekerProfile(User user, String firstName, String lastName, String phone, String city, String country, EmploymentTypeEnum employmentType) {
+    public JobSeekerProfile(User user,
+                            String firstName,
+                            String lastName,
+                            String phone,
+                            String city,
+                            String country,
+                            EmploymentTypeEnum employmentType,
+                            String profileImage,
+                            String resumeUrl) {
         this.user = user;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,5 +68,7 @@ public class JobSeekerProfile {
         this.city = city;
         this.country = country;
         this.employmentType = employmentType;
+        this.profileImage = profileImage;
+        this.resumeUrl = resumeUrl;
     }
 }

@@ -32,7 +32,9 @@ public final class SeedProfileConstants {
             "(+1) 718 999 4582",
             "New York",
             "Brooklyn/Queens",
-            EmploymentTypeEnum.FULL_TIME
+            EmploymentTypeEnum.FULL_TIME,
+            "jobseeker.png",
+            "resume_01.pdf"
     );
 
     public SeedProfileConstants() {

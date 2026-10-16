@@ -3,10 +3,7 @@ package jobportal.presentation.controller;
 import jakarta.validation.Valid;
 import jobportal.application.dto.profiles.JobSeekerProfileResponse;
 import jobportal.application.dto.profiles.UpdateJobSeekerProfileRequest;
-import jobportal.application.use_cases.profiles.jobseeker.GetJobSeekerProfileUseCase;
-import jobportal.application.use_cases.profiles.jobseeker.GetJobSeekerResumeUseCase;
-import jobportal.application.use_cases.profiles.jobseeker.UpdateJobSeekerProfileUseCase;
-import jobportal.application.use_cases.profiles.jobseeker.UpdateJobSeekerResumeUseCase;
+import jobportal.application.use_cases.profiles.jobseeker.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,12 +23,16 @@ public class JobSeekerProfileController {
     private final UpdateJobSeekerProfileUseCase updateJobSeekerProfileUseCase;
     private final UpdateJobSeekerResumeUseCase updateJobSeekerResumeUseCase;
     private final GetJobSeekerResumeUseCase getJobSeekerResumeUseCase;
+    private final UpdateJobSeekerImageUseCase updateJobSeekerImageUseCase;
+    private final GetJobSeekerImageUseCase getJobSeekerImageUseCase;
 
-    public JobSeekerProfileController(GetJobSeekerProfileUseCase getJobSeekerProfileUseCase, UpdateJobSeekerProfileUseCase updateJobSeekerProfileUseCase, UpdateJobSeekerResumeUseCase updateJobSeekerResumeUseCase, GetJobSeekerResumeUseCase getJobSeekerResumeUseCase) {
+    public JobSeekerProfileController(GetJobSeekerProfileUseCase getJobSeekerProfileUseCase, UpdateJobSeekerProfileUseCase updateJobSeekerProfileUseCase, UpdateJobSeekerResumeUseCase updateJobSeekerResumeUseCase, GetJobSeekerResumeUseCase getJobSeekerResumeUseCase, UpdateJobSeekerImageUseCase updateJobSeekerImageUseCase, GetJobSeekerImageUseCase getJobSeekerImageUseCase) {
         this.getJobSeekerProfileUseCase = getJobSeekerProfileUseCase;
         this.updateJobSeekerProfileUseCase = updateJobSeekerProfileUseCase;
         this.updateJobSeekerResumeUseCase = updateJobSeekerResumeUseCase;
         this.getJobSeekerResumeUseCase = getJobSeekerResumeUseCase;
+        this.updateJobSeekerImageUseCase = updateJobSeekerImageUseCase;
+        this.getJobSeekerImageUseCase = getJobSeekerImageUseCase;
     }
 
     @GetMapping("/me")
@@ -52,7 +53,7 @@ public class JobSeekerProfileController {
     @PutMapping("/me/resume")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('JOB_SEEKER')")
-    public JobSeekerProfileResponse updateMyJobSeekerResumeProfile(
+    public JobSeekerProfileResponse updateMyJobSeekerResume(
             @RequestParam("resume") MultipartFile resumeFile) throws IOException {
         return updateJobSeekerResumeUseCase.execute(resumeFile);
     }
@@ -64,6 +65,28 @@ public class JobSeekerProfileController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+    }
+
+    @PutMapping("/me/profile-image")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('JOB_SEEKER')")
+    public JobSeekerProfileResponse updateMyJobSeekerProfileImage(
+            @RequestParam("profile-img") MultipartFile imgFile) throws IOException {
+        return updateJobSeekerImageUseCase.execute(imgFile);
+    }
+
+    @GetMapping("/me/profile-image")
+    @PreAuthorize("hasRole('JOB_SEEKER')")
+    public ResponseEntity<Resource> getMyJobSeekerProfileImage() throws IOException {
+        Resource resource = getJobSeekerImageUseCase.execute();
+
+        MediaType mediaType = MediaType.IMAGE_PNG;
+        if (!"image/png".equalsIgnoreCase(resource.getFile().toPath().toString())) {
+            mediaType = MediaType.IMAGE_JPEG;
+        }
+        return ResponseEntity.ok()
+                .contentType(mediaType)
                 .body(resource);
     }
 

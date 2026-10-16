@@ -5,7 +5,7 @@ import jobportal.application.dto.profiles.RecruiterProfileResponse;
 import jobportal.application.dto.user.UserResponse;
 import jobportal.application.mapper.UserMapper;
 import jobportal.application.use_cases.profiles.GetAdminProfileUseCase;
-import jobportal.application.use_cases.profiles.GetRecruiterProfileUseCase;
+import jobportal.application.use_cases.profiles.recruiter.GetRecruiterProfileUseCase;
 import jobportal.application.use_cases.users.GetAllUsersUseCase;
 import jobportal.application.use_cases.users.GetMyAccountUseCase;
 import org.springframework.http.HttpStatus;

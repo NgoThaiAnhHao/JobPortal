@@ -1,6 +1,5 @@
-package jobportal.application.use_cases.profiles;
+package jobportal.application.use_cases.profiles.recruiter;
 
-import jobportal.application.dto.profiles.ProfileResponse;
 import jobportal.application.dto.profiles.RecruiterProfileResponse;
 import jobportal.application.mapper.RecruiterProfileMapper;
 import jobportal.application.use_cases.users.GetMyAccountUseCase;

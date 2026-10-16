@@ -21,8 +21,8 @@ public class JobSeekerProfileRepositoryImpl implements JobSeekerProfileRepositor
     }
 
     @Override
-    public void save(JobSeekerProfile jobSeekerProfile) {
-        jpaJobSeekerProfileRepository.save(jobSeekerProfile);
+    public JobSeekerProfile save(JobSeekerProfile jobSeekerProfile) {
+        return jpaJobSeekerProfileRepository.save(jobSeekerProfile);
     }
 
     @Override

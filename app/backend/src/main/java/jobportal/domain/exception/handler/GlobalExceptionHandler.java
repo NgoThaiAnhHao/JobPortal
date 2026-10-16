@@ -1,6 +1,7 @@
 package jobportal.domain.exception.handler;
 
 
+import jakarta.validation.ConstraintViolationException;
 import jobportal.domain.exception.common.DuplicateResourceException;
 import jobportal.domain.exception.common.ResourceNotFoundException;
 import jobportal.domain.exception.common.TooManyRequestException;
@@ -38,6 +39,27 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "Method_Argument_Not_Valid",
                 errors
+        );
+
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // Validation exception for path variable
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException e) {
+        // Get path variable name
+        String propertyPath = e.getConstraintViolations()
+                .stream()
+                .findFirst()
+                .map(violation -> violation.getPropertyPath().toString())
+                .orElse("");
+
+        // Set error details
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Constraint_Violation",
+                Map.of(propertyPath, e.getMessage())
         );
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);

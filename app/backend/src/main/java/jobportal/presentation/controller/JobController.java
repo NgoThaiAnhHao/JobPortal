@@ -1,27 +1,30 @@
 package jobportal.presentation.controller;
 
+import jakarta.validation.constraints.Positive;
 import jobportal.application.dto.jobs.JobResponse;
 import jobportal.application.use_cases.jobs.SearchAndGetAllJobsUseCase;
+import jobportal.application.use_cases.jobs.ViewJobDetails;
 import jobportal.domain.enums.EmploymentTypeEnum;
 import jobportal.domain.enums.SortJobsEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/jobs")
+@Validated
 public class JobController {
 
     private final SearchAndGetAllJobsUseCase searchAndGetAllJobsUseCase;
+    private final ViewJobDetails viewJobDetails;
 
-    public JobController(SearchAndGetAllJobsUseCase searchAndGetAllJobsUseCase) {
+    public JobController(SearchAndGetAllJobsUseCase searchAndGetAllJobsUseCase, ViewJobDetails viewJobDetails) {
         this.searchAndGetAllJobsUseCase = searchAndGetAllJobsUseCase;
+        this.viewJobDetails = viewJobDetails;
     }
 
     @GetMapping
@@ -46,5 +49,13 @@ public class JobController {
                 maxSalary,
                 sort,
                 pageable);
+    }
+
+    @GetMapping("/{jobId}")
+    public JobResponse viewJobsDetails(
+            @PathVariable
+            @Positive(message = "Job ID must be greater than 0")
+            Long jobId) {
+        return viewJobDetails.execute(jobId);
     }
 }

@@ -94,4 +94,35 @@ public interface JpaJobRepository extends JpaRepository<Job, Long> {
             JobStatusEnum status,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT J FROM Job J
+            JOIN J.company C
+            JOIN J.user U
+            JOIN J.jobSubcategory S
+            JOIN S.jobCategory CAT
+          WHERE
+            J.status = :status
+    
+            /* Non deleted */
+            AND J.deletedAt IS NULL
+            AND C.deletedAt IS NULL
+    
+            /* Non expired */
+            AND (
+                J.deadlineAt IS NULL
+                OR J.deadlineAt > CURRENT_TIMESTAMP
+            )
+ 
+            /* Verified Or Active */
+            AND C.isVerified = TRUE
+            AND CAT.isActive = TRUE
+            AND S.isActive = TRUE
+    
+            AND J.jobId = :jobId
+    """)
+    Job viewJobDetails(
+            Long jobId,
+            JobStatusEnum status
+    );
 }

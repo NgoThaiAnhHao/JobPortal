@@ -64,6 +64,11 @@ public class JobRepositoryImpl implements JobRepository {
         );
     }
 
+    @Override
+    public Job viewJobDetails(Long jobId) {
+        return jpaJobRepository.viewJobDetails(jobId, JobStatusEnum.PUBLISHED);
+    }
+
     private Sort toSort(SortJobsEnum sort) {
         if (sort == null) {
             return Sort.unsorted();

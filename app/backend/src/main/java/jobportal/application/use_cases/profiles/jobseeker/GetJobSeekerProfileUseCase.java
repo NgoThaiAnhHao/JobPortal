@@ -1,4 +1,4 @@
-package jobportal.application.use_cases.profiles;
+package jobportal.application.use_cases.profiles.jobseeker;
 
 import jobportal.application.dto.profiles.JobSeekerProfileResponse;
 import jobportal.application.mapper.JobSeekerProfileMapper;

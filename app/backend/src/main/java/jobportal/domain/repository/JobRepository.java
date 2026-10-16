@@ -19,4 +19,6 @@ public interface JobRepository {
             BigDecimal maxSalary,
             SortJobsEnum sort,
             Pageable pageable);
+
+    Job viewJobDetails(Long jobId);
 }

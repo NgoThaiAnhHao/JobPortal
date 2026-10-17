@@ -1,0 +1,19 @@
+
+@import "tailwindcss";
+@import "./styles/colors.css";
+
+@theme {
+  --font-sans: "IBM Plex Sans", sans-serif;
+}
+
+@theme inline {
+  --color-blue-01: var(--blue-01);
+  --color-blue-02: var(--blue-02);
+  --color-white-01: var(--white-01);
+  --color-red-01: var(--red-01);
+  --color-neutral-01: var(--neutral-01);
+}
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+}

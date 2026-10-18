@@ -27,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository
                 .findByEmail(email)
                 .orElseThrow(() ->
-                        new UserNotFoundException("User not found.")
+                        new UserNotFoundException("This user is non exist, please try again!")
                 );
     }
 

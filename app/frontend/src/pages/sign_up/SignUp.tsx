@@ -9,6 +9,8 @@ import { Loading } from "../../components/layout/ui/Loading";
 import { getApiErrorMessage } from "../../lib/api/agent";
 import { register, resendEmailOtp, verifyEmailOtp, type RegisterRequest } from "../../lib/api/auth";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useToast } from "../../components/layout/ui/toastContext";
 
 type SignUpProps = {
   /** Connect this callback to the registration API in the parent application. */
@@ -41,6 +43,7 @@ export default function SignUp({
   onPrivacyClick,
 }: SignUpProps) {
   const navigate = useNavigate();
+  const { notify } = useToast();
   const [step, setStep] = useState<"signup" | "verify">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -97,12 +100,12 @@ export default function SignUp({
       };
       await (onSubmitRegistration ?? register)(registration);
       setEmail(normalizedEmail);
-      setOtpMessage("A verification code has been sent to your email.");
+      notify("success", "Your account was created. A verification code has been sent to your email.");
       setStep("verify");
       setResendSeconds(45);
       window.setTimeout(() => otpRefs.current[0]?.focus(), 0);
     } catch (submitError) {
-      setError(getApiErrorMessage(submitError, "We couldn't submit your registration. Please try again."));
+      notify("error", getApiErrorMessage(submitError, "We couldn't submit your registration. Please try again."));
     } finally {
       setIsSubmitting(false);
     }
@@ -135,10 +138,10 @@ export default function SignUp({
       await resendEmailOtp(email);
       setOtp(Array(OTP_LENGTH).fill(""));
       setResendSeconds(45);
-      setOtpMessage("A new verification code has been sent.");
+      notify("success", "A new verification code has been sent.");
       otpRefs.current[0]?.focus();
     } catch (resendError) {
-      setOtpMessage(getApiErrorMessage(resendError, "We couldn't resend the code. Please try again."));
+      notify("error", getApiErrorMessage(resendError, "We couldn't resend the code. Please try again."));
     } finally {
       setIsResending(false);
     }
@@ -159,10 +162,11 @@ export default function SignUp({
         new Promise((resolve) => window.setTimeout(resolve, 300)),
       ]);
       setIsVerified(true);
+      notify("success", "Your email has been verified successfully.");
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       navigate("/", { replace: true });
     } catch (verificationError) {
-      setOtpMessage(getApiErrorMessage(verificationError, "We couldn't verify that code. Please try again."));
+      notify("error", getApiErrorMessage(verificationError, "We couldn't verify that code. Please try again."));
     } finally {
       setIsVerifying(false);
     }
@@ -292,7 +296,7 @@ export default function SignUp({
 
               <div className="jobtex-signup__signin">
                 <p>Already have an account?{" "}
-                  <a href="/login" onClick={onSignInClick}>Sign in »</a>
+                  <Link to="/auth/login" onClick={onSignInClick}>Sign in »</Link>
                 </p>
               </div>
             </div>

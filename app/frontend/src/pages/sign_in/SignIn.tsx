@@ -1,14 +1,18 @@
 import { useState, type SubmitEvent } from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import "../auth/Auth.css";
 import Trust from "../../components/layout/ui/Trust";
 import FadeUp from "../../components/layout/ui/FadeUp";
 import AuthHero from "../../components/layout/AuthHero";
 import JobNotifications from "../../components/layout/JobNotifications";
 import { Loading } from "../../components/layout/ui/Loading";
+import { getApiErrorMessage } from "../../lib/api/agent";
+import { login } from "../../lib/api/auth";
+import { saveAuthSession } from "../../lib/api/authStorage";
+import { useToast } from "../../components/layout/ui/toastContext";
 
 type SignInProps = {
-  /** Connect to the existing login API; do not treat a resolved callback as auth unless it actually authenticates. */
-  onSubmitSignIn?: (credentials: { email: string; password: string; rememberMe: boolean }) => void | Promise<void>;
   onForgotPasswordClick?: () => void;
   onCreateAccountClick?: () => void;
   onGoogleSignInClick?: () => void;
@@ -47,11 +51,12 @@ function GoogleIcon() {
 }
 
 export default function SignIn({
-  onSubmitSignIn,
   onForgotPasswordClick,
   onCreateAccountClick,
   onGoogleSignInClick,
 }: SignInProps) {
+  const navigate = useNavigate();
+  const { notify } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -74,16 +79,15 @@ export default function SignIn({
       setError("Please enter your password.");
       return;
     }
-    if (!onSubmitSignIn) {
-      setError("Sign-in is not connected yet. Connect your existing authentication service to continue.");
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      await onSubmitSignIn({ email: normalizedEmail, password, rememberMe });
-    } catch {
-      setError("Unable to sign in with those details. Please check your credentials and try again.");
+      const session = await login({ email: normalizedEmail, password });
+      saveAuthSession(session, rememberMe);
+      notify("success", "Signed in successfully.");
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      navigate("/", { replace: true });
+    } catch (requestError) {
+      notify("error", getApiErrorMessage(requestError, "Unable to sign in. Please check your credentials and try again."));
     } finally {
       setIsSubmitting(false);
     }
@@ -187,9 +191,9 @@ export default function SignIn({
             <div className="jobtex-signin__create-account">
               <p>
                 Not have an account?{" "}
-                <a href="/register" onClick={onCreateAccountClick}>
+              <Link to="/auth/sign-up" onClick={onCreateAccountClick}>
                   Create an account <span aria-hidden="true">»</span>
-                </a>
+              </Link>
               </p>
             </div>
           </form>

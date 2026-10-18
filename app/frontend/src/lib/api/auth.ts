@@ -1,5 +1,21 @@
 import { agent } from "./agent";
 
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+  role: string;
+};
+
+export async function login(request: LoginRequest): Promise<LoginResponse> {
+  const response = await agent.post<LoginResponse>("/auth/login", request);
+  return response.data;
+}
+
 export type RegisterRequest = {
   email: string;
   password: string;

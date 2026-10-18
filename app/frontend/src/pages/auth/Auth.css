@@ -1,0 +1,1217 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+.jobtex-signin a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.jobtex-signin__ambient {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.jobtex-signin__ambient--top {
+  top: -140px;
+  left: 50%;
+  width: min(780px, 100vw);
+  height: 340px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at top, rgb(178 200 236 / 32%), rgb(230 232 234 / 15%) 46%, transparent 72%);
+  filter: blur(22px);
+}
+
+.jobtex-signin__ambient--bottom {
+  right: 24%;
+  bottom: -140px;
+  width: 380px;
+  height: 280px;
+  filter: blur(12px);
+}
+
+.jobtex-signin__card {
+  box-shadow: 0 20px 50px -10px rgb(3 28 56 / 8%), 0 4px 16px -2px rgb(0 12 38 / 4%);
+  transition: box-shadow 200ms ease;
+}
+
+.jobtex-signin__card:hover {
+  box-shadow: 0 22px 54px -10px rgb(3 28 56 / 10%), 0 5px 18px -2px rgb(0 12 38 / 5%);
+}
+
+.jobtex-signin__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.jobtex-signin__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jobtex-signin__field > label {
+  margin-left: 4px;
+  color: var(--auth-navy);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.jobtex-signin__field input {
+  display: block;
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #191c1e;
+  background: var(--auth-input);
+  font-size: 14px;
+  line-height: 22px;
+  transition: background-color 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.jobtex-signin__field input::placeholder {
+  color: rgb(100 116 139 / 75%);
+  opacity: 1;
+}
+
+.jobtex-signin__field input:focus {
+  border-color: rgb(188 0 7 / 15%);
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgb(188 0 7 / 25%);
+}
+
+.jobtex-signin__password-wrap {
+  position: relative;
+}
+
+.jobtex-signin__password-wrap input {
+  padding-right: 52px;
+}
+
+.jobtex-signin__visibility {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 32px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  color: var(--auth-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.jobtex-signin__visibility:hover {
+  color: var(--auth-navy);
+}
+
+.jobtex-signin__visibility svg {
+  width: 20px;
+  height: 20px;
+}
+
+.jobtex-signin__options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.jobtex-signin__remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--auth-muted);
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.jobtex-signin__remember input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin: 0;
+  accent-color: var(--auth-red);
+  cursor: pointer;
+}
+
+.jobtex-signin__options > a {
+  flex: 0 0 auto;
+  color: var(--auth-red);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 600;
+  transition: color 150ms ease;
+}
+
+.jobtex-signin__options > a:hover {
+  text-decoration: underline;
+}
+
+.jobtex-signin__error {
+  margin: -8px 4px 0;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.jobtex-signin__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 12px;
+  padding: 12px 32px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--auth-navy);
+  box-shadow: 0 6px 20px -2px rgb(3 20 46 / 35%);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.jobtex-signin__submit:hover:not(:disabled) {
+  background: var(--auth-navy-deep);
+  box-shadow: 0 8px 24px -2px rgb(3 20 46 / 45%);
+  transform: translateY(-2px);
+}
+
+.jobtex-signin__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.jobtex-signin__submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.jobtex-signin__submit svg {
+  width: 18px;
+  height: 18px;
+}
+
+.jobtex-signin__social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.jobtex-signin__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 4px 0;
+  color: var(--auth-muted);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.jobtex-signin__divider::before,
+.jobtex-signin__divider::after {
+  height: 1px;
+  flex: 1;
+  background: rgb(196 198 206 / 60%);
+  content: "";
+}
+
+.jobtex-signin__google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 20px;
+  border: 1px solid rgb(196 198 206 / 60%);
+  border-radius: 999px;
+  color: var(--auth-navy);
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.jobtex-signin__google:hover {
+  border-color: #aeb2ba;
+  background: var(--auth-input);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 7%);
+}
+
+.jobtex-signin__google-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.jobtex-signin__status {
+  margin: -6px 0 0;
+  color: var(--auth-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.jobtex-signin__create-account {
+  margin-top: 24px;
+  padding-top: 24px;
+  text-align: center;
+}
+
+.jobtex-signin__create-account p {
+  margin: 0;
+  color: var(--auth-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.jobtex-signin__create-account a {
+  color: var(--auth-red);
+  font-weight: 600;
+  transition: color 150ms ease;
+}
+
+.jobtex-signin__create-account a:hover {
+  text-decoration: underline;
+}
+
+.jobtex-signin__create-account a span {
+  margin-left: 3px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.jobtex-signin__trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 28px;
+  color: var(--auth-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.jobtex-signin__trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jobtex-signin__trust svg {
+  width: 18px;
+  height: 18px;
+  color: var(--auth-red);
+}
+
+.jobtex-signin__trust i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #c4c6ce;
+}
+
+@media (min-width: 640px) {
+  .jobtex-signin__card {
+    padding: 48px;
+  }
+}
+
+@media (max-width: 520px) {
+  .jobtex-signin {
+    min-height: 0;
+    padding: 32px 14px 40px;
+  }
+
+  .jobtex-signin__card {
+    padding: 32px 22px;
+    border-radius: 22px;
+  }
+
+  .jobtex-signin__header {
+    margin-bottom: 26px;
+  }
+
+  .jobtex-signin__header h1 {
+    font-size: 34px;
+  }
+
+  .jobtex-signin__field > label {
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .jobtex-signin__options {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .jobtex-signin__trust {
+    gap: 12px 16px;
+    font-size: 11px;
+  }
+
+  .jobtex-signin__trust i {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jobtex-signin *,
+  .jobtex-signin *::before,
+  .jobtex-signin *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Sign-up and email verification styles */
+.jobtex-signup button,
+.jobtex-signup a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jobtex-signup a {
+  color: inherit;
+}
+
+.jobtex-signup__ambient {
+  position: absolute;
+  z-index: -1;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+  opacity: 0.55;
+}
+
+.jobtex-signup__ambient--one {
+  top: -190px;
+  left: calc(50% - 410px);
+  background: radial-gradient(circle, rgb(188 0 7 / 7%), transparent 70%);
+}
+
+.jobtex-signup__ambient--two {
+  right: calc(50% - 450px);
+  bottom: -210px;
+  background: radial-gradient(circle, rgb(3 20 46 / 7%), transparent 70%);
+}
+
+.jobtex-signup__card {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px -8px rgb(0 25 53 / 8%);
+  transition: box-shadow 250ms ease;
+}
+
+.jobtex-signup__card:hover {
+  box-shadow: 0 16px 44px -10px rgb(0 25 53 / 11%);
+}
+
+.jobtex-signup__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: jobtex-signup-enter 240ms ease both;
+}
+
+.jobtex-signup__verify-header h2 {
+  margin: 0;
+  color: var(--auth-red);
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.jobtex-signup__verify-header p {
+  max-width: 400px;
+  margin: 8px auto 0;
+  color: var(--auth-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.jobtex-signup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.jobtex-signup__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.jobtex-signup__field > label {
+  color: #191c1e;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.jobtex-signup__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.jobtex-signup__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.jobtex-signup__input-wrap > .jobtex-signup__icon {
+  position: absolute;
+  left: 16px;
+  color: var(--auth-muted);
+  pointer-events: none;
+}
+
+.jobtex-signup__input-wrap input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 48px 12px 44px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #191c1e;
+  background: var(--auth-input);
+  font-size: 14px;
+  line-height: 22px;
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.jobtex-signup__input-wrap input::placeholder {
+  color: var(--auth-muted);
+  opacity: 1;
+}
+
+.jobtex-signup__input-wrap input:focus {
+  border-color: rgb(253 22 22 / 25%);
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgb(253 22 22 / 18%);
+}
+
+.jobtex-signup__visibility {
+  position: absolute;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--auth-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.jobtex-signup__visibility:hover {
+  color: #191c1e;
+}
+
+.jobtex-signup__terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.jobtex-signup__terms input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin: 4px 0 0;
+  accent-color: var(--auth-red);
+  cursor: pointer;
+}
+
+.jobtex-signup__terms label {
+  color: var(--auth-muted);
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.jobtex-signup__terms a,
+.jobtex-signup__signin a,
+.jobtex-signup__otp-note button {
+  color: var(--auth-red);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.jobtex-signup__terms a:hover,
+.jobtex-signup__signin a:hover,
+.jobtex-signup__otp-note button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.jobtex-signup__error {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.jobtex-signup__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 16px;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--auth-navy);
+  box-shadow: 0 4px 8px rgb(3 20 46 / 12%);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.jobtex-signup__submit:hover:not(:disabled) {
+  background: var(--auth-navy-deep);
+  box-shadow: 0 7px 14px rgb(3 20 46 / 17%);
+  transform: translateY(-1px);
+}
+
+.jobtex-signup__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.jobtex-signup__submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.jobtex-signup__submit .jobtex-signup__icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 180ms ease;
+}
+
+.jobtex-signup__submit:hover .jobtex-signup__icon {
+  transform: translateX(3px);
+}
+
+.jobtex-signup__divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 28px 0;
+  color: var(--auth-muted);
+}
+
+.jobtex-signup__divider::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--auth-signup-border);
+  content: "";
+}
+
+.jobtex-signup__divider span {
+  position: relative;
+  padding: 0 16px;
+  background: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.jobtex-signup__google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid var(--auth-signup-border);
+  border-radius: 12px;
+  color: #191c1e;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.jobtex-signup__google:hover {
+  border-color: #cbd5e1;
+  background: var(--auth-input);
+}
+
+.jobtex-signup__google-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.jobtex-signup__signin {
+  margin-top: 32px;
+  padding-top: 24px;
+  text-align: center;
+}
+
+.jobtex-signup__signin p {
+  margin: 0;
+  color: var(--auth-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.jobtex-signup__signin a {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 4px;
+}
+
+.jobtex-signup__trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 28px;
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.jobtex-signup__trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jobtex-signup__trust .jobtex-signup__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--auth-red);
+}
+
+.jobtex-signup__trust i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #c4c6ce;
+}
+
+.jobtex-signup__verify-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.jobtex-signup__verify-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 16px;
+  color: var(--auth-red);
+  background: #fff5f5;
+  box-shadow: inset 0 1px 3px rgb(188 0 7 / 5%);
+}
+
+.jobtex-signup__verify-icon .jobtex-signup__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.jobtex-signup__step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: var(--auth-red);
+  background: #fff5f5;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.jobtex-signup__step-badge .jobtex-signup__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.jobtex-signup__verify-header h2 {
+  font-size: 32px;
+}
+
+.jobtex-signup__verify-header strong {
+  color: #191c1e;
+  overflow-wrap: anywhere;
+}
+
+.jobtex-signup__otp-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.jobtex-signup__otp-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.jobtex-signup__otp-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobtex-signup__otp-cell input {
+  width: 44px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #191c1e;
+  background: var(--auth-input);
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  transition: background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.jobtex-signup__otp-cell input:focus {
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgb(253 22 22 / 35%);
+}
+
+.jobtex-signup__otp-dash {
+  color: #c4c6ce;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.jobtex-signup__otp-note {
+  margin: 0;
+  color: var(--auth-muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.jobtex-signup__otp-note button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.jobtex-signup__otp-note button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+.jobtex-signup__status {
+  margin: -8px 0 0;
+  color: var(--auth-muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.jobtex-signup__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border: 0;
+  color: var(--auth-muted);
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.jobtex-signup__back:hover {
+  color: #191c1e;
+}
+
+.jobtex-signup__back .jobtex-signup__icon {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes jobtex-signup-enter {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 560px) {
+  .jobtex-signup {
+    padding: 28px 14px 40px;
+  }
+
+  .jobtex-signup__card {
+    padding: 32px 22px;
+    border-radius: 20px;
+  }
+
+  .jobtex-signup__header {
+    margin-bottom: 26px;
+  }
+
+  .jobtex-signup__header h1 {
+    font-size: 34px;
+  }
+
+  .jobtex-signup__trust {
+    gap: 12px 16px;
+    font-size: 11px;
+  }
+
+  .jobtex-signup__trust i {
+    display: none;
+  }
+
+  .jobtex-signup__otp-row {
+    gap: 5px;
+  }
+
+  .jobtex-signup__otp-cell {
+    gap: 5px;
+  }
+
+  .jobtex-signup__otp-cell input {
+    width: min(10.5vw, 42px);
+    height: 52px;
+    border-radius: 10px;
+    font-size: 20px;
+  }
+
+  .jobtex-signup__otp-dash {
+    font-size: 14px;
+  }
+
+  .jobtex-signup__verify-header h2 {
+    font-size: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jobtex-signup *,
+  .jobtex-signup *::before,
+  .jobtex-signup *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Shared auth page component */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --auth-navy: #03142e;
+  --auth-navy-deep: #000c26;
+  --auth-red: #bc0007;
+  --auth-bg: #f7f9fb;
+  --auth-input: #f2f4f6;
+  --auth-muted: #64748b;
+  --auth-border: #c4c6ce;
+  --auth-signup-border: #e0e3e5;
+  --auth-red-bright: #fd1616;
+  --auth-surface: #ffffff;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 600px;
+  padding: 48px 16px 64px;
+  overflow: hidden;
+  color: #191c1e;
+  background: var(--auth-bg);
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.auth-page *,
+.auth-page *::before,
+.auth-page *::after { box-sizing: inherit; }
+
+.auth-page button,
+.auth-page input { font: inherit; }
+
+.auth-page :is(button, a, input):focus-visible {
+  outline: 2px solid rgb(188 0 7 / 50%);
+  outline-offset: 3px;
+}
+
+.auth-shell {
+  display: block;
+  width: min(100%, 576px);
+  margin: 0 auto;
+}
+
+.auth-card {
+  width: 100%;
+  padding: 48px;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.auth-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.auth-header h1 {
+  margin: 0 0 8px;
+  color: var(--auth-red);
+  font-size: 40px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.auth-header p {
+  margin: 0;
+  color: var(--auth-muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+
+@media (max-width: 560px) {
+  .auth-page { min-height: 0; padding: 32px 14px 40px; }
+  .auth-card { padding: 32px 22px; border-radius: 22px; }
+  .auth-header { margin-bottom: 26px; }
+  .auth-header h1 { font-size: 34px; }
+}
+
+.auth-hero {
+  position: relative;
+  display: grid;
+  min-height: clamp(300px, 40vw, 400px);
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  background-color: #03142e;
+  background-position: center;
+  background-size: cover;
+}
+
+.auth-hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(0 12 38 / 82%), rgb(3 20 46 / 76%));
+  content: "";
+}
+
+.auth-hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, transparent calc(25% - 1px), rgb(255 255 255 / 13%) 25%, transparent calc(25% + 1px), transparent calc(50% - 1px), rgb(255 255 255 / 13%) 50%, transparent calc(50% + 1px), transparent calc(75% - 1px), rgb(255 255 255 / 13%) 75%, transparent calc(75% + 1px));
+  content: "";
+  pointer-events: none;
+}
+
+.auth-hero--signup {
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB4nYd6Pe9VHUI4ZRegBq21DJ3aaRhncTF6vnN8aK13idekbL0T7ERInvAulhPb_l2yKboPieP704XVlxAEvqEiUnynpYMAeVQk-gExYaE1uL1ALUPVNHB1oHaXp0kstD6CqlelpdINPGmkj160ga00CCdsVNh6alCMVPtgmBNM6oLGYxofQgHSeojc6y0yBQMM6RSkmGsFyxepyFpkcuwBNvLw0rqphodMrm39fdPMOvxZWnVubLUf");
+}
+
+.auth-hero--signin {
+  background-image: url("https://lh3.googleusercontent.com/aida/AEtjO1U70kAKy8xIoxpJD4a5N3cpG-UDYu1IQadDxm1TcxuEeSMJAsgPGhZCNHSnVa1uvU3Lsr7pjaQJ0d_RBczjaGf-UErVjxDyv7iDuUi6v_2cN86lueCOvjgnXjphKd30-SgUzFeQjFY2j4S3BEgVxrDl02QQyzWuAAOp8VoCJLX2pyXCyxeaPyDSDmUy3QlHGOnSKZaWC7_mLCcBuDms19c_rNC-Ru3Lpy_jaSjZymmj0davNJABCP0VE8s");
+}
+
+.auth-hero__content {
+  width: min(100% - 40px, 1240px);
+  text-align: center;
+}
+
+.auth-hero__content h1 {
+  margin: 0 0 24px;
+  color: #fff;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.auth-hero__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 70px;
+  padding: 0 34px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 999px;
+  background: rgb(0 12 38 / 16%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.auth-hero__breadcrumb a { color: inherit; font-weight: 500; text-decoration: none; }
+.auth-hero__breadcrumb span[aria-hidden="true"] { font-size: 26px; line-height: 1; }
+
+.job-notifications {
+  padding: 64px 100px;
+  color: #fff;
+  background: #ff1717;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.job-notifications__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
+  align-items: center;
+  gap: 48px;
+  width: min(100%, 1600px);
+  margin: 0 auto;
+}
+
+.job-notifications__copy h2 {
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.job-notifications__copy p { margin: 0; font-size: 20px; line-height: 1.5; }
+
+.job-notifications__form {
+  position: relative;
+  display: flex;
+  min-height: 60px;
+  padding: 0 0 0 28px;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.job-notifications__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.job-notifications__form input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: #191c1e;
+  background: transparent;
+  font-size: 20px;
+}
+
+.job-notifications__form input::placeholder { color: #687078; opacity: 1; }
+
+.job-notifications__form button {
+  min-width: 198px;
+  margin: 0;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: #031a35;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.job-notifications__form button:disabled { cursor: wait; opacity: .7; }
+
+.job-notifications__message {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  color: #fff;
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .auth-hero { min-height: 460px; }
+  .auth-hero__breadcrumb { min-height: 58px; padding: 0 24px; font-size: 15px; }
+  .job-notifications { padding: 44px 20px 56px; }
+  .job-notifications__inner { grid-template-columns: 1fr; gap: 26px; }
+  .job-notifications__form { min-height: 70px; padding-left: 18px; }
+  .job-notifications__form input { font-size: 16px; }
+  .job-notifications__form button { min-width: 130px; font-size: 16px; }
+}
+
+@media (max-width: 420px) {
+  .job-notifications__form { min-height: 62px; padding-left: 12px; }
+  .job-notifications__form button { min-width: 104px; border-radius: 11px; font-size: 14px; }
+}

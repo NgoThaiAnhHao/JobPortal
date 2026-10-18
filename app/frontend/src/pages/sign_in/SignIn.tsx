@@ -1,7 +1,9 @@
 import { useState, type SubmitEvent } from "react";
-import "./SignIn.css";
+import "../auth/Auth.css";
 import Trust from "../../components/layout/ui/Trust";
 import FadeUp from "../../components/layout/ui/FadeUp";
+import AuthHero from "../../components/layout/AuthHero";
+import JobNotifications from "../../components/layout/JobNotifications";
 
 type SignInProps = {
   /** Connect to the existing login API; do not treat a resolved callback as auth unless it actually authenticates. */
@@ -95,13 +97,15 @@ export default function SignIn({
   };
 
   return (
-    <section className="jobtex-signin" aria-labelledby="jobtex-signin-title">
+    <>
+    <AuthHero title="Sign In" />
+    <section className="auth-page jobtex-signin" aria-labelledby="jobtex-signin-title">
       <div className="jobtex-signin__ambient jobtex-signin__ambient--top" aria-hidden="true" />
       <div className="jobtex-signin__ambient jobtex-signin__ambient--bottom" aria-hidden="true" />
 
-      <FadeUp className="jobtex-signin__content">
-        <div className="jobtex-signin__card">
-          <header className="jobtex-signin__header">
+      <FadeUp className="auth-shell jobtex-signin__content">
+        <div className="auth-card jobtex-signin__card">
+          <header className="auth-header jobtex-signin__header">
             <h1 id="jobtex-signin-title">Sign In</h1>
             <p>Log in to your jobtex account to access job applications and talent profiles.</p>
           </header>
@@ -190,5 +194,7 @@ export default function SignIn({
         <Trust />
       </FadeUp>
     </section>
+    <JobNotifications />
+    </>
   );
 }

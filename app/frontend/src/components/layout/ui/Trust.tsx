@@ -1,5 +1,5 @@
 import TrustIcons from "./TrustIcons";
-import "../../../pages/sign_up/SignUp.css";
+import "../../../pages/auth/Auth.css";
 
 export default function Trust() {
   return (

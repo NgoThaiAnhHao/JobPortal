@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, type SubmitEvent, type ClipboardEvent, type KeyboardEvent } from "react";
-import "./SignUp.css";
+import "../auth/Auth.css";
 import TrustIcons from "../../components/layout/ui/TrustIcons";
 import Trust from "../../components/layout/ui/Trust";
 import FadeUp from "../../components/layout/ui/FadeUp";
+import AuthHero from "../../components/layout/AuthHero";
+import JobNotifications from "../../components/layout/JobNotifications";
 
 type SignUpProps = {
   /** Connect this callback to the registration API in the parent application. */
@@ -127,15 +129,17 @@ export default function SignUp({
   };
 
   return (
-    <section className="jobtex-signup" aria-labelledby="jobtex-signup-title">
+    <>
+    <AuthHero title="Sign Up" />
+    <section className="auth-page jobtex-signup" aria-labelledby="jobtex-signup-title">
       <div className="jobtex-signup__ambient jobtex-signup__ambient--one" aria-hidden="true" />
       <div className="jobtex-signup__ambient jobtex-signup__ambient--two" aria-hidden="true" />
 
-      <FadeUp className="jobtex-signup__shell">
-        <div className="jobtex-signup__card">
+      <FadeUp className="auth-shell jobtex-signup__shell">
+        <div className="auth-card jobtex-signup__card">
           {step === "signup" ? (
             <div className="jobtex-signup__panel">
-              <header className="jobtex-signup__header">
+              <header className="auth-header jobtex-signup__header">
                 <h1 id="jobtex-signup-title">Sign Up</h1>
                 <p>Create your Jobtex account to access top career opportunities and talent profiles.</p>
               </header>
@@ -301,5 +305,7 @@ export default function SignUp({
         <Trust />
       </FadeUp>
     </section>
+    <JobNotifications />
+    </>
   );
 }

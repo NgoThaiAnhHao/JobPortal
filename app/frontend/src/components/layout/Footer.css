@@ -1,0 +1,292 @@
+/* Footer styles are scoped to the component so they won't affect other pages. */
+.jobtex-footer {
+  --footer-navy: #001935;
+  --footer-bottom: #00142b;
+  --footer-border: #0a2342;
+  --footer-red: #ff1e27;
+  --footer-text: #cbd5e1;
+  --footer-muted: #94a3b8;
+  width: 100%;
+  color: var(--footer-text);
+  background: var(--footer-navy);
+  border-top: 1px solid var(--footer-border);
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.jobtex-footer,
+.jobtex-footer *,
+.jobtex-footer *::before,
+.jobtex-footer *::after {
+  box-sizing: border-box;
+}
+
+.jobtex-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.jobtex-footer a:focus-visible {
+  outline: 2px solid var(--footer-red);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.jobtex-footer__main {
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  padding: 64px 48px 48px;
+}
+
+.jobtex-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 0.85fr)) minmax(0, 1fr);
+  gap: 48px;
+}
+
+.jobtex-footer__brand {
+  min-width: 0;
+}
+
+.jobtex-footer__brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.jobtex-footer__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgb(255 255 255 / 10%);
+}
+
+.jobtex-footer__brand-mark svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.jobtex-footer__brand-name {
+  color: #fff;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.jobtex-footer__description {
+  max-width: 320px;
+  margin: 24px 0 0;
+  color: var(--footer-text);
+  line-height: 1.7;
+}
+
+.jobtex-footer__socials {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.jobtex-footer__socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--footer-navy);
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+  transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.jobtex-footer__socials a:hover {
+  color: #fff;
+  background: var(--footer-red);
+  transform: translateY(-2px);
+}
+
+.jobtex-footer__socials svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.jobtex-footer__column {
+  min-width: 0;
+}
+
+.jobtex-footer__heading {
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+
+.jobtex-footer__link-list,
+.jobtex-footer__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jobtex-footer__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--footer-text);
+  transition: color 150ms ease;
+  font-size: 1rem;
+}
+
+.jobtex-footer__link:hover,
+.jobtex-footer__contact-list a:hover,
+.jobtex-footer__legal a:hover {
+  color: var(--footer-red);
+}
+
+.jobtex-footer__chevron {
+  color: var(--footer-red);
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 700;
+  transition: transform 150ms ease;
+}
+
+.jobtex-footer__contact-list {
+  gap: 14px;
+}
+
+.jobtex-footer__contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.jobtex-footer__contact-list svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  color: var(--footer-red);
+}
+
+.jobtex-footer__contact-list a,
+.jobtex-footer__contact-list span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.jobtex-footer__bottom {
+  background: var(--footer-bottom);
+  border-top: 1px solid #09223e;
+  padding: 24px 48px;
+}
+
+.jobtex-footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  color: var(--footer-muted);
+  font-size: 12px;
+}
+
+.jobtex-footer__bottom-inner p {
+  margin: 0;
+}
+
+.jobtex-footer__bottom-inner p a {
+  color: #fff;
+  font-weight: 500;
+  transition: color 150ms ease;
+}
+
+.jobtex-footer__bottom-inner p a:hover {
+  color: var(--footer-red);
+}
+
+.jobtex-footer__legal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+
+.jobtex-footer__legal a {
+  transition: color 150ms ease;
+}
+
+@media (max-width: 1023px) {
+  .jobtex-footer__main {
+    padding-inline: 32px;
+  }
+
+  .jobtex-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 36px;
+  }
+
+  .jobtex-footer__bottom {
+    padding-inline: 32px;
+  }
+}
+
+@media (max-width: 599px) {
+  .jobtex-footer__main {
+    padding: 44px 20px 36px;
+  }
+
+  .jobtex-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .jobtex-footer__description {
+    max-width: 420px;
+  }
+
+  .jobtex-footer__bottom {
+    padding: 22px 20px;
+  }
+
+  .jobtex-footer__bottom-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .jobtex-footer__legal {
+    justify-content: center;
+    gap: 10px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jobtex-footer *,
+  .jobtex-footer *::before,
+  .jobtex-footer *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

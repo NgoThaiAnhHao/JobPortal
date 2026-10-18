@@ -63,7 +63,7 @@ export default function Navbar() {
         {/* Desktop Actions */}
         <div className="hidden items-center gap-6 md:flex">
           <NavLink
-            to="/auth/register"
+            to="/auth/sign-up"
             className="text-[15px] font-bold text-white/90 transition-colors duration-500 hover:text-red-01"
           >
             Sign Up

@@ -1,4 +1,5 @@
 import { useState, type SubmitEvent } from "react";
+import { Loading } from "./ui/Loading";
 import FadeUp from "./ui/FadeUp";
 
 type JobNotificationsProps = {
@@ -52,7 +53,7 @@ export default function JobNotifications({ onSubscribe }: JobNotificationsProps)
             required
           />
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Subscribing..." : "Subscribe"}
+            {isSubmitting ? <><Loading /> Subscribing...</> : "Subscribe"}
           </button>
           {message && <span className="job-notifications__message" role="status">{message}</span>}
         </form>

@@ -7,6 +7,7 @@ export default function Logo() {
         {/* Brand Logo */}
         <NavLink
           to={'/'}
+          onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "instant" })}
           className="group flex cursor-pointer select-none items-center gap-1"
         >
           <LogoIcon />

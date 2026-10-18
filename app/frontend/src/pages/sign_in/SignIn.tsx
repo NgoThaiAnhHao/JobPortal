@@ -4,6 +4,7 @@ import Trust from "../../components/layout/ui/Trust";
 import FadeUp from "../../components/layout/ui/FadeUp";
 import AuthHero from "../../components/layout/AuthHero";
 import JobNotifications from "../../components/layout/JobNotifications";
+import { Loading } from "../../components/layout/ui/Loading";
 
 type SignInProps = {
   /** Connect to the existing login API; do not treat a resolved callback as auth unless it actually authenticates. */
@@ -165,8 +166,11 @@ export default function SignIn({
             {error && <p className="jobtex-signin__error" role="alert">{error}</p>}
 
             <button className="jobtex-signin__submit" type="submit" disabled={isSubmitting}>
-              <span>{isSubmitting ? "Signing In..." : "Sign In"}</span>
-              {!isSubmitting && <ArrowForwardIcon />}
+              {isSubmitting ? (
+                <><Loading /><span>Signing In...</span></>
+              ) : (
+                <><span>Sign In</span><ArrowForwardIcon /></>
+              )}
             </button>
 
             <div className="jobtex-signin__social">

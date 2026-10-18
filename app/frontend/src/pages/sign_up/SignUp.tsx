@@ -5,10 +5,14 @@ import Trust from "../../components/layout/ui/Trust";
 import FadeUp from "../../components/layout/ui/FadeUp";
 import AuthHero from "../../components/layout/AuthHero";
 import JobNotifications from "../../components/layout/JobNotifications";
+import { Loading } from "../../components/layout/ui/Loading";
+import { getApiErrorMessage } from "../../lib/api/agent";
+import { register, resendEmailOtp, verifyEmailOtp, type RegisterRequest } from "../../lib/api/auth";
+import { useNavigate } from "react-router";
 
 type SignUpProps = {
   /** Connect this callback to the registration API in the parent application. */
-  onSubmitRegistration?: (data: { email: string; password: string }) => void | Promise<void>;
+  onSubmitRegistration?: (data: RegisterRequest) => void | Promise<void>;
   /** Optional handler for the existing sign-in flow. */
   onSignInClick?: () => void;
   /** Optional handler for opening Terms of Service. */
@@ -36,6 +40,7 @@ export default function SignUp({
   onTermsClick,
   onPrivacyClick,
 }: SignUpProps) {
+  const navigate = useNavigate();
   const [step, setStep] = useState<"signup" | "verify">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,6 +51,9 @@ export default function SignUp({
   const [error, setError] = useState("");
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const [otpMessage, setOtpMessage] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendSeconds, setResendSeconds] = useState(45);
   const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -60,12 +68,13 @@ export default function SignUp({
     event.preventDefault();
     setError("");
 
-    // if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.trim())) {
-    //   setError("Please enter a valid email address.");
-    //   return;
-    // }
-    if (password.length < 8) {
-      setError("Password must contain at least 8 characters.");
+    const normalizedEmail = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)\S{8,64}$/.test(password)) {
+      setError("Use 8–64 characters with an uppercase letter, a lowercase letter, and a number. Spaces aren't allowed.");
       return;
     }
     if (password !== confirmPassword) {
@@ -77,24 +86,26 @@ export default function SignUp({
       return;
     }
 
-    if (onSubmitRegistration) {
-      setIsSubmitting(true);
-      try {
-        await onSubmitRegistration({ email: email.trim(), password });
-        setOtpMessage("Registration request submitted. Connect your verification service to send an email code.");
-      } catch {
-        setError("We couldn't submit your registration. Please try again.");
-        setIsSubmitting(false);
-        return;
-      }
+    setIsSubmitting(true);
+    try {
+      const registration: RegisterRequest = {
+        email: normalizedEmail,
+        password,
+        confirmPassword,
+        userTypeEnum: "JOB_SEEKER",
+        provider: "LOCAL",
+      };
+      await (onSubmitRegistration ?? register)(registration);
+      setEmail(normalizedEmail);
+      setOtpMessage("A verification code has been sent to your email.");
+      setStep("verify");
+      setResendSeconds(45);
+      window.setTimeout(() => otpRefs.current[0]?.focus(), 0);
+    } catch (submitError) {
+      setError(getApiErrorMessage(submitError, "We couldn't submit your registration. Please try again."));
+    } finally {
       setIsSubmitting(false);
-    } else {
-      setOtpMessage("UI preview only: connect your registration API to send a verification code.");
     }
-
-    setStep("verify");
-    setResendSeconds(45);
-    window.setTimeout(() => otpRefs.current[0]?.focus(), 0);
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -117,15 +128,44 @@ export default function SignUp({
     otpRefs.current[Math.min(pasted.length, OTP_LENGTH) - 1]?.focus();
   };
 
-  const handleResend = () => {
-    // This is intentionally UI-only; connect an OTP resend API before production use.
-    setResendSeconds(45);
-    setOtpMessage("UI preview only: connect your verification service to resend the code.");
+  const handleResend = async () => {
+    setOtpMessage("");
+    setIsResending(true);
+    try {
+      await resendEmailOtp(email);
+      setOtp(Array(OTP_LENGTH).fill(""));
+      setResendSeconds(45);
+      setOtpMessage("A new verification code has been sent.");
+      otpRefs.current[0]?.focus();
+    } catch (resendError) {
+      setOtpMessage(getApiErrorMessage(resendError, "We couldn't resend the code. Please try again."));
+    } finally {
+      setIsResending(false);
+    }
   };
 
-  const handleVerify = (event: SubmitEvent) => {
+  const handleVerify = async (event: SubmitEvent) => {
     event.preventDefault();
-    setOtpMessage("Verification UI is ready. Connect your OTP verification API to complete registration.");
+    setOtpMessage("");
+    if (otp.some((digit) => !digit)) {
+      setOtpMessage("Enter the complete 6-digit verification code.");
+      return;
+    }
+
+    setIsVerifying(true);
+    try {
+      await Promise.all([
+        verifyEmailOtp(email, otp.join("")),
+        new Promise((resolve) => window.setTimeout(resolve, 300)),
+      ]);
+      setIsVerified(true);
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      navigate("/", { replace: true });
+    } catch (verificationError) {
+      setOtpMessage(getApiErrorMessage(verificationError, "We couldn't verify that code. Please try again."));
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   return (
@@ -231,8 +271,11 @@ export default function SignUp({
                 {error && <p className="jobtex-signup__error" role="alert">{error}</p>}
 
                 <button className="jobtex-signup__submit" type="submit" disabled={isSubmitting}>
-                  <span>{isSubmitting ? "Submitting..." : "Sign Up & Verify"}</span>
-                  <TrustIcons name="arrow_forward" />
+                  {isSubmitting ? (
+                    <><Loading /><span>Creating account...</span></>
+                  ) : (
+                    <><span>Sign Up &amp; Verify</span><TrustIcons name="arrow_forward" /></>
+                  )}
                 </button>
               </form>
 
@@ -284,13 +327,16 @@ export default function SignUp({
                 </div>
                 <p className="jobtex-signup__otp-note">
                   Didn't receive code?{" "}
-                  <button type="button" onClick={handleResend} disabled={resendSeconds > 0}>
-                    Resend OTP{resendSeconds > 0 ? ` (00:${String(resendSeconds).padStart(2, "0")})` : ""}
+                  <button type="button" onClick={handleResend} disabled={resendSeconds > 0 || isResending || isVerified}>
+                    {isResending ? <><Loading /> Sending...</> : "Resend OTP"}{resendSeconds > 0 ? ` (00:${String(resendSeconds).padStart(2, "0")})` : ""}
                   </button>
                 </p>
-                <button className="jobtex-signup__submit" type="submit">
-                  <span>Verify &amp; Complete Registration</span>
-                  <TrustIcons name="arrow_forward" />
+                <button className="jobtex-signup__submit" type="submit" disabled={isVerifying || isVerified}>
+                  {isVerifying ? (
+                    <><Loading /><span>Verifying code...</span></>
+                  ) : (
+                    <><span>{isVerified ? "Email Verified" : "Verify & Complete Registration"}</span>{!isVerified && <TrustIcons name="arrow_forward" />}</>
+                  )}
                 </button>
                 {otpMessage && <p className="jobtex-signup__status" role="status">{otpMessage}</p>}
                 <button className="jobtex-signup__back" type="button" onClick={() => { setStep("signup"); setOtpMessage(""); }}>

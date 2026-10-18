@@ -1215,3 +1215,27 @@
   .job-notifications__form { min-height: 62px; padding-left: 12px; }
   .job-notifications__form button { min-width: 104px; border-radius: 11px; font-size: 14px; }
 }
+
+.loading-indicator {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.loading-indicator > [role="status"] {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+  vertical-align: middle;
+}
+
+.loading-indicator > [role="status"] > [aria-hidden="true"] {
+  top: 0 !important;
+  left: 0 !important;
+}

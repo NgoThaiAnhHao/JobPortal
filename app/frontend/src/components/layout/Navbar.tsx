@@ -38,6 +38,7 @@ export default function Navbar() {
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState<string | null>(
     null,
   );
+  const scrollToTop = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
   return (
     <header className="font-sans sticky top-0 z-50 w-full bg-blue-01 shadow-md">
@@ -64,6 +65,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-6 md:flex">
           <NavLink
             to="/auth/sign-up"
+            onClick={scrollToTop}
             className="text-[15px] font-bold text-white/90 transition-colors duration-500 hover:text-red-01"
           >
             Sign Up
@@ -71,6 +73,7 @@ export default function Navbar() {
 
           <NavLink
             to="/auth/login"
+            onClick={scrollToTop}
             className="inline-flex font-bold items-center justify-center rounded-md bg-red-01 px-6 py-2.5 text-[15px] text-white shadow-sm transition-all duration-500 hover:bg-[white] hover:text-inherit"
           >
             Sign In
@@ -178,6 +181,7 @@ export default function Navbar() {
                       : `/${item.label.toLowerCase().replace(/\s+/g, "-")}`
                   }
                   onClick={() => {
+                    if (item.label === "Home") scrollToTop();
                     setIsMobileMenuOpen(false);
                     setOpenMobileSubmenu(null);
                   }}
@@ -196,8 +200,11 @@ export default function Navbar() {
           {/* Mobile Authentication Actions */}
           <div className="mt-3 flex flex-col gap-3 border-t border-white/10 pt-4">
             <NavLink
-              to="/auth/register"
-              onClick={() => setIsMobileMenuOpen(false)}
+              to="/auth/sign-up"
+              onClick={() => {
+                scrollToTop();
+                setIsMobileMenuOpen(false);
+              }}
               className="rounded-md py-3 text-center text-white/90 transition-colors hover:bg-white/5 hover:text-red-01"
             >
               Sign Up
@@ -205,7 +212,10 @@ export default function Navbar() {
 
             <NavLink
               to="/auth/login"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={() => {
+                scrollToTop();
+                setIsMobileMenuOpen(false);
+              }}
               className="rounded-md bg-red-01 py-3 text-center font-bold text-white transition-colors hover:bg-white hover:text-gray-900"
             >
               Sign In

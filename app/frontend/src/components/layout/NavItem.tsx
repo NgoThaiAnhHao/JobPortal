@@ -32,6 +32,11 @@ export default function NavItem({
     >
       <NavLink
         to={href}
+        onClick={() => {
+          if (label === "Home") {
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          }
+        }}
         className={`flex items-center gap-1.5 transition-colors hover:text-red-01 
             ${isOpen ? "text-red-01" : ""} 
             ${active ? "font-semibold text-red-01" : ""}`}

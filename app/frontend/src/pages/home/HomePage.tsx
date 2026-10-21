@@ -1,6 +1,7 @@
 import { useMemo, useState, type SubmitEvent } from "react";
 import "./HomePage.css";
 import FadeUp from "../../components/layout/ui/FadeUp";
+import FadeLeft from "@/components/layout/ui/FadeLeft";
 
 const categories = [
   { icon: "calculate", name: "Accountancy", count: 301 },
@@ -160,8 +161,7 @@ const articles = [
     title: "Build a Resume Recruiters Want to Read",
     description:
       "Learn how to make your experience, skills, and achievements easy to scan.",
-    image:
-      "https://images.unsplash.com/photo-1455390582262-044cdept4?auto=format&fit=crop&w=900&q=80",
+    image: "/images/resume-career-advice.jpg",
   },
   {
     category: "Technology",
@@ -333,7 +333,7 @@ export default function HomePage() {
             </p>
           )}
           {/* Jobs */}
-          <FadeUp className="home-job-list">
+          <FadeLeft className="home-job-list">
             {filteredJobs.map((job) => (
               <article className="home-job-card" key={job.title}>
                 <div className="home-job-main">
@@ -390,7 +390,7 @@ export default function HomePage() {
                 location.
               </div>
             )}
-          </FadeUp>
+          </FadeLeft>
         </div>
       </section>
 
@@ -518,9 +518,8 @@ export default function HomePage() {
             ))}
           </div>
         </FadeUp>
-        <div
+        <FadeLeft
           className="home-why-image"
-          role="img"
           aria-label="Professional woman working at a bright modern workspace"
         />
       </section>
@@ -538,7 +537,7 @@ export default function HomePage() {
               Apply Now <Icon name="arrow_forward" />
             </a>
           </FadeUp>
-          <FadeUp className="home-cta-card home-cta-navy">
+          <FadeLeft className="home-cta-card home-cta-navy">
             <span>Hiring Managers</span>
             <h2>Are You Recruiting?</h2>
             <p>
@@ -548,7 +547,7 @@ export default function HomePage() {
             <a href="#home-plans">
               Post a Vacancy <Icon name="arrow_forward" />
             </a>
-          </FadeUp>
+          </FadeLeft>
         </div>
       </section>
 

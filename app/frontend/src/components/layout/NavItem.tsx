@@ -44,7 +44,7 @@ export default function NavItem({
         {label}
         {dropdown && (
           <i
-            className={`fa-solid fa-chevron-down text-[11px] transition-transfor`}
+            className={`fa-solid fa-chevron-down text-[11px] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
             aria-hidden="true"
           />
         )}

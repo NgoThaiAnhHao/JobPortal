@@ -115,7 +115,7 @@
 .home-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; border-top: 1px solid rgba(255,255,255,.13); margin-top: 38px; padding-top: 25px; }
 .home-metrics strong { display: block; font-size: 29px; color: var(--jobtex-red); line-height: 1.2; }
 .home-metrics span { display: block; font-size: 11px; color: rgba(255,255,255,.8); margin-top: 5px; }
-.home-why-image { min-height: 560px; background: linear-gradient(0deg, rgba(3,20,46,.16), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmA6NR4I8292Sl3gjJEofTvJrz2oQQ5bmcvCrtwe5VvKAXStTIwqiZZjpWeMylAVDW9iCz1qnSMmk-ZL4E9FVjbmPfzP9s8FvUsU0BhEEFbS6atONqRf46sv8ntkvIejIF7rR_q_MZZrc1d79iYcuFAhA4_wYQ9MBTOwWGIyhf9stqhSbICfINAgIuUPU4SdNxOaMtMLXLG1uSX929phuvH73ublg7MEHO3Jaq6Q30H5b77AEFEsBO") center/cover; }
+.home-why-image { min-height: 560px; background: linear-gradient(0deg, rgba(3,20,46,.16), transparent), url("/images/why-jobtex-workspace.jpg") center/cover; }
 .home-cta-section { padding: 64px 0; }
 .home-cta-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; }
 .home-cta-card { min-height: 230px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; padding: 30px; border-radius: 16px; box-shadow: 0 12px 24px rgba(0,25,53,.1); isolation: isolate; }

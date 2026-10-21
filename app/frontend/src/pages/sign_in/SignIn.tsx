@@ -82,7 +82,7 @@ export default function SignIn({
     setIsSubmitting(true);
     try {
       const session = await login({ email: normalizedEmail, password });
-      saveAuthSession(session, rememberMe);
+      saveAuthSession(session, normalizedEmail, rememberMe);
       notify("success", "Signed in successfully.");
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       navigate("/", { replace: true });

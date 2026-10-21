@@ -16,6 +16,10 @@ export async function login(request: LoginRequest): Promise<LoginResponse> {
   return response.data;
 }
 
+export async function logout(refreshToken: string): Promise<void> {
+  await agent.post("/auth/logout", { refreshToken });
+}
+
 export type RegisterRequest = {
   email: string;
   password: string;

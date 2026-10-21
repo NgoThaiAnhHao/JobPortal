@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAuthSession } from "./authStorage";
 
 const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
 
@@ -7,6 +8,14 @@ export const agent = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+agent.interceptors.request.use((config) => {
+  const accessToken = getAuthSession()?.accessToken;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
 });
 
 type ApiErrorResponse = {
